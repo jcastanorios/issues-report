@@ -1,4 +1,12 @@
-#pruebas automatizadas de sw
+#Integrantes del equipo
+Danna Coral                       - d.corall@uniandes.edu.co
+Fabian Mauricio Quintero Castillo - f.quinteroc@uniandes.edu.co
+Wilder López                      - w.lopezm@uniandes.edu.co
+Juan Gonzalo Castaño Rios         - j.castanor
+#pruebas automatizadas de sw en Kraken
+
+
+#pruebas automatizadas de sw en Cypress
 Por favor seguir los siguientes pasos para reproducir las pruebas una vez clone el repositorio.
 1. Clonar el repositorio
 2. Ubiquese en la raiz del repositorio pruebas-automatizadas-sw

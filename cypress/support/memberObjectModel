@@ -1,0 +1,59 @@
+class MemberObjectModel {
+    clicOpcionMenuMiembros() {
+        cy.wait(2000);
+        cy.get('a[id="ember28"]').click();
+    }
+    
+    validarAccesoPaginaMiembros() {
+      return cy.request("https://ghost-aaej.onrender.com/ghost/#/members").then((response) => response);
+    }
+
+    validarTituloSeccionMiembros(){
+      return cy.get("h2.gh-canvas-title").invoke("text").then((text) => text);
+    }
+
+    obtenerTotalMiembrosBlog(){
+      return cy.get("div.gh-nav-top").find("a.active.ember-view").find("span.gh-nav-member-count").invoke("text").then((text) => text);
+    }
+
+    adicionarNuevoMiebro(){
+      cy.get("div.view-actions-top-row")
+      .find("a.ember-view.gh-btn.gh-btn-primary")
+      .contains("span", "New member")
+      .click();
+    }
+
+    adicionarNombreMiembro(nombre){
+      cy.get('input[id="member-name"]').blur().type(nombre);
+    }
+
+    adicionarEmailMiembro(email){
+      cy.wait(2000);
+      cy.get("div.form-group.max-width.error.ember-view")
+        .find("input.ember-text-field.gh-input.ember-view")
+        .type(email);
+
+    }
+
+    almacenarMiembroBlog(){
+      cy.get("div.gh-canvas-header")
+      .find("header.gh-canvas-header-content")
+      .find("section.view-actions")
+      .find("button.gh-btn.gh-btn-primary.gh-btn-icon.ember-view")
+      .find("span")
+      .contains("Save")
+      .click();
+    }
+
+    obtenerBotonRetry(){
+      return cy.get("div.gh-canvas-header").find("header.gh-canvas-header-content").find("section.view-actions").find("button.gh-btn.gh-btn-primary.gh-btn-icon.ember-view").find("span").contains("Retry").invoke("text").then((text) => text);
+    }
+
+    obtenerBaggedMiembros(){
+      return cy.get("div.gh-nav-top")
+        .find("a.active.ember-view")
+        .find("span.gh-nav-member-count");
+    }
+  }
+
+  export default new MemberObjectModel();

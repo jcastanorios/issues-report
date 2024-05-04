@@ -2,9 +2,11 @@ const { Given, When, Then } = require('@cucumber/cucumber');
 const { faker } = require('@faker-js/faker');
 const LoginGhost = require('../support/login.js'); // Importar la clase por defecto
 const PageCreatePublish = require('../support/pageCreatePublish.js'); // Importar la clase por defecto
-
+const MemberObjectModel = require('../support/memberObjectModel.js');
 let loginGhost;
 let pageCreatePublish;
+let memberObjectModel
+let totalMembers=0;
 
 //Credenciales de ghost
 const USER_GHOST = "wilderlopezm@gmail.com";
@@ -13,6 +15,7 @@ const PASS_GHOST = "12345678901";
 Given('I am logged into the Ghost application', async function () {
     loginGhost = new LoginGhost(this.driver);
     pageCreatePublish = new PageCreatePublish(this.driver);
+    memberObjectModel = new MemberObjectModel(this.driver);
     loginGhost.visit();
     await loginGhost.enterEmail(USER_GHOST);
     await loginGhost.enterPassword(PASS_GHOST);

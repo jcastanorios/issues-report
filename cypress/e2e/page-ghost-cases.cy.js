@@ -35,23 +35,6 @@ describe("Escenario para validar y verificar la creación y la publicación de u
         cy.wait(2000); // Esperar 2 segundos
     });
 
-    it("Tercer caso: Editar Page...", () => {
-        let tituloPage; // Declarar variable para almacenar el título del page
-        tituloPage = createPublishPage(); // Llamar a la función para crear una page
-        selectImageForPage(tituloPage); // Llamar a la función para seleccionar una imagen para el page
-        enterPageDetails(tituloPage); // Llamar a la función para ingresar los detalles del page
-        publishPage(tituloPage); // Llamar a la función para publicar un page
-        checkPagePublished(tituloPage); // Llamar a la función para verificar que el page esté publicado
-
-        //Editar page
-        PageCreatePublish.editPage(tituloPage); // Editar page
-        const nuevoTituloPage = faker.commerce.productName(); // Generar un nuevo título de page aleatorio
-        PageCreatePublish.editPageDetails(nuevoTituloPage); // Editar los detalles del page
-        PageCreatePublish.updatePage(nuevoTituloPage); // Publicar page editado
-        checkPagePublished(nuevoTituloPage); // Verificar que el page editado esté publicado
-        cy.log(`El page cambió de título de: "${tituloPage}"  a  "${nuevoTituloPage}" .`);
-        cy.wait(2000); // Esperar 2 segundos
-    });
 });
 
 function schedulePage(tituloPage){

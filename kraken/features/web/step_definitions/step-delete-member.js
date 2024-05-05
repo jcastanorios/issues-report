@@ -34,28 +34,36 @@ Given(
  * Escenario de pruebas para eliminación de un miembro para un blog
  */
 When("I delete a member", async () => {
-  totalMembers = Number(await memberObjectModel.validateMemberCreation());
+
   await memberObjectModel.getMembersPage();
-  await new Promise((resolve) => setTimeout(resolve, 9000));
+  await new Promise((resolve) => setTimeout(resolve, 2000));
   await memberObjectModel.clickOnMembers();
   await memberObjectModel.setNameMember(faker.person.fullName());
   let emailFake = faker.internet.email();
   await memberObjectModel.setEmailMember(emailFake);
   await memberObjectModel.saveMember();
-  await new Promise((resolve) => setTimeout(resolve, 9000));
+  await new Promise((resolve) => setTimeout(resolve, 2000));
   await memberObjectModel.getMembersPage();
+  totalMembers = Number(await memberObjectModel.validateMemberCreation());
 
   //clic en el miembro de la lista
-  //await memberObjectModel.getFirsElementOnList();
-
+  let url = await memberObjectModel.getIdFromMemberCreate();
+  //dirigir a la sección de eliminación por el id del miembro creado
+  await memberObjectModel.getMemberPageById(url);
+  //dar clic elemento piñon en la sección
+  await memberObjectModel.getActions();
+  //eliminar el miembro del blog
+  await memberObjectModel.getDeleteMember();
+  //confimar eliminación
+  await memberObjectModel.confirmDeleteMember();
 });
 /**
  * Escenario al final comprobación de cantidad de miembros en la lista
  */
 Then("I validate member elimination", async () => {
-  if ((await memberObjectModel.validateMemberCreation()) > totalMembers) {
+  if ((await memberObjectModel.validateMemberCreation()) < totalMembers) {
     console.log(
-      "total miembros: ",
+      "Total miembros después de eliminación:",
       await memberObjectModel.validateMemberCreation()
     );
   }

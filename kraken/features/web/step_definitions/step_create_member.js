@@ -46,6 +46,6 @@ When("I create a member", async () => {
  */
 Then("I validate member creation", async () => {
   if ((await memberObjectModel.validateMemberCreation()) > totalMembers) {
-    console.log("total miembros: ", await memberObjectModel.validateMemberCreation());
+    console.log("Total miembros después de creación: ", await memberObjectModel.validateMemberCreation());
   }
 });

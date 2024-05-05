@@ -23,3 +23,11 @@ Scenario: Eliminación nuevo miembro del blog
   And I wait for 5 seconds
   Then I validate member elimination
 
+@user4 @web
+Scenario: Creación página en draft para un blog
+  Given I am logged into the Ghost application for create page on draft
+  And I wait for 5 seconds
+  When I create a page on draft
+  And I wait for 5 seconds
+  Then I validate page create on draft
+

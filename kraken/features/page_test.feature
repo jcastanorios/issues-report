@@ -15,3 +15,11 @@ Scenario: Creación nuevo miembro del blog
   And I wait for 5 seconds
   Then I validate member creation
 
+@user3 @web
+Scenario: Eliminación nuevo miembro del blog
+  Given I am logged into the Ghost application for delete a member
+  And I wait for 5 seconds
+  When I delete a member
+  And I wait for 5 seconds
+  Then I validate member elimination
+

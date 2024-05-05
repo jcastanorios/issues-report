@@ -26,6 +26,10 @@ class MemberObjectModel {
     const texto = await spanElement.getText();
     return texto;
   }
+
+  async getFirsElementOnList() {
+   
+  }
 }
 
 module.exports = MemberObjectModel;

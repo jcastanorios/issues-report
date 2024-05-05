@@ -20,10 +20,9 @@ Given(
     loginGhost = new LoginGhost(this.driver);
     pageCreatePublish = new PageCreatePublish(this.driver);
     memberObjectModel = new MemberObjectModel(this.driver);
-    // Obtén la ruta absoluta al archivo properties.json
-    const propertiesPath = path.resolve(__dirname, "../properties.json");
-
-    const properties = JSON.parse(fs.readFileSync(propertiesPath, "utf8"));
+    const properties = JSON.parse(
+      fs.readFileSync(path.resolve(__dirname, "../properties.json"), "utf8")
+    );
     loginGhost.visit();
     await loginGhost.enterEmail(properties.USER_GHOST);
     await loginGhost.enterPassword(properties.PASS_GHOST);
@@ -47,6 +46,6 @@ When("I create a member", async () => {
  */
 Then("I validate member creation", async () => {
   if ((await memberObjectModel.validateMemberCreation()) > totalMembers) {
-    console.log("total miembros: ", memberObjectModel.validateMemberCreation());
+    console.log("total miembros: ", await memberObjectModel.validateMemberCreation());
   }
 });

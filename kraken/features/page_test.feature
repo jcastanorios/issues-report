@@ -1,5 +1,4 @@
 Feature: Test Pages Crete, Publish
-
 @user1 @web
 Scenario: Crear, publicar y verificar una página
   Given I am logged into the Ghost application
@@ -35,6 +34,6 @@ Scenario: Creación página en draft para un blog
   Given I am logged into the Ghost application for create page on draft
   And I wait for 5 seconds
   When I create a page on draft
-  And I wait for 5 seconds
+  And I wait for 9 seconds
   Then I validate page create on draft
 

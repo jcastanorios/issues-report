@@ -1,3 +1,4 @@
+const { faker } = require("@faker-js/faker");
 class PageOnDraftObjectModel {
   constructor(driver) {
     this.driver = driver;
@@ -16,42 +17,37 @@ class PageOnDraftObjectModel {
     );
   }
 
-  async getRecentlyPages(){
-    await this.driver.url("https://ghost-aaej.onrender.com/ghost/#/pages?order=updated_at%20desc");
+  async getRecentlyPages() {
+    await this.driver.url(
+      "https://ghost-aaej.onrender.com/ghost/#/pages?order=updated_at%20desc"
+    );
+  }
+
+  async getFirstTitlePage() {    
+    const titleElement = await this.driver.$('.gh-content-entry-title');
+    return await titleElement.getText();
   }
 
   async wait(time) {
     await new Promise((resolve) => setTimeout(resolve, time));
   }
-}
 
-/*
-    const svgElement = await this.driver
-      .$(".gh-contentfilter-sort")
-      .$('svg[viewBox="0 0 26 17"]');
-    svgElement.click();
-    const content = await this.driver
-      .$(".ember-application")
-      .$(".gh-contentfilter-menu-dropdown");
-    const lista = content.$(".ember-power-select-options");
-    console.log(lista.$(":nth-child(3)").getText());
-*/
-/*
-await this.driver.waitUntil(
-      async () => {
-        const svgElement = await this.driver
-          .$(".gh-contentfilter-sort")
-          .$('svg[viewBox="0 0 26 17"]');
-        svgElement.click();
+  async visit() {
+    await this.driver.url("https://ghost-aaej.onrender.com/ghost/#/pages");
+  }
 
-        await this.driver
-          .$(".ember-application")
-          .$(".gh-contentfilter-menu-dropdown");
-
-        return await this.driver.$(".ember-power-select-options").isDisplayed();
-      },
-      { timeout: 9000 }
+  async clickNewPage() {
+    await this.driver.$('//span[contains(text(), "New page")]').click();
+  }
+  async enterPageDetails(tituloPage) {
+    let element1 = await this.driver.$('textarea[placeholder="Page title"]');
+    await element1.setValue(tituloPage);
+    const contenidoPage = faker.lorem.paragraph(3);
+    let element2 = await this.driver.$(
+      'div[data-placeholder="Begin writing your page..."]'
     );
-    await this.driver.$(":nth-child(3)").click();*/
+    await element2.setValue(contenidoPage);
+  }
+}
 
 module.exports = PageOnDraftObjectModel;

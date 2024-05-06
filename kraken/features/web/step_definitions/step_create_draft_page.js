@@ -1,13 +1,14 @@
 const { Given, When, Then } = require("@cucumber/cucumber");
 const { faker } = require("@faker-js/faker");
 const LoginGhost = require("../support/login.js"); // Importar la clase por defecto
-const PageCreatePublish = require("../support/pageCreatePublish.js"); // Importar la clase por defecto
 const fs = require("fs");
 const path = require("path");
 const PageOnDraftObjectModel = require("../support/pageOnDraftObjectModel.js");
 
 let loginGhost;
-let pageCreatePublish;
+let titlePage;
+let pageOnDraftObjectModel;
+
 /**
  * Precondiciones dadas para garantizar la ejecución
  * usuario administrador con credenciales válidas
@@ -16,8 +17,7 @@ Given(
   "I am logged into the Ghost application for create page on draft",
   async function () {
     loginGhost = new LoginGhost(this.driver);
-    pageCreatePublish = new PageCreatePublish(this.driver);
-    pageOnDraftObjectModel= new PageOnDraftObjectModel(this.driver);
+    pageOnDraftObjectModel = new PageOnDraftObjectModel(this.driver);
     const properties = JSON.parse(
       fs.readFileSync(path.resolve(__dirname, "../properties.json"), "utf8")
     );
@@ -29,16 +29,25 @@ Given(
 );
 
 /**
- * Escenario de pruebas para eliminación de un miembro para un blog
+ * Escenario de pruebas para creación de página en draft
  */
 When("I create a page on draft", async () => {
-  pageOnDraftObjectModel.getUrlPage();
-  pageOnDraftObjectModel.getRecentlyPages();
-  //pageOnDraftObjectModel.filterPage();
+  titlePage = faker.commerce.productName();
+  await pageOnDraftObjectModel.getUrlPage();
+  await pageOnDraftObjectModel.clickNewPage();
+  await pageOnDraftObjectModel.enterPageDetails(titlePage);
+  await pageOnDraftObjectModel.wait(7000);
+  await pageOnDraftObjectModel.getRecentlyPages();
+  await pageOnDraftObjectModel.getFirstTitlePage();
 });
 /**
- * Escenario al final comprobación de cantidad de miembros en la lista
+ * Escenario al final comprobación de título corresponda a la página en draft
  */
 Then("I validate page create on draft", async () => {
-
+  if ((await pageOnDraftObjectModel.getFirstTitlePage()) == titlePage) {
+    console.log(
+      "se valida que el primer titulo si corresponde a la página en draft",
+      titlePage
+    );
+  }
 });

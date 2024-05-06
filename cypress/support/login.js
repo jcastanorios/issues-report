@@ -1,7 +1,7 @@
 const LoginGhost = {
     visit() {
       cy.visit("https://ghost-aaej.onrender.com/ghost/#/signin");
-      cy.wait(2000);
+      cy.wait(7000);
     },
   
     diligenciarEmail(email) {
@@ -14,6 +14,7 @@ const LoginGhost = {
   
     clickBotonSignIn() {
       cy.get("button").eq(1).focus().click();
+      cy.wait(8000);
     },
   
     errorLogin() {

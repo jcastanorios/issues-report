@@ -6,6 +6,7 @@ describe("Escenario para validar y verificar login de la aplicación ghost", () 
 
   beforeEach(() => {
     LoginGhost.visit();
+    
   });
 
   it("Test primer caso no se diligencian los campos de email y password -> error", () => {

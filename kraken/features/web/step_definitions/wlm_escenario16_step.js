@@ -14,7 +14,7 @@ When('I click login', async function() {
 });
 
 When('I click post', async function() {
-    let element = await this.driver.$('section > div > ul:nth-child(2) > li:nth-child(1)');
+    let element = await this.driver.$('a[href="#/posts/"]');
     return await element.click();
 });
 When('I Clic en la herramienta', async function() {

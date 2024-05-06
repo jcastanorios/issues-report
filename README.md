@@ -5,7 +5,17 @@ Fabian Mauricio Quintero Castillo - f.quinteroc@uniandes.edu.co
 Wilder López                      - w.lopezm@uniandes.edu.co
 Juan Gonzalo Castaño Rios         - j.castanor@uniandes.edu.co
 
+Aplicación bajo pruebas Ghost 5.14.1
+Versiones para la instalación
+-------------------------------------
+Node   v20.11.1 | v20.12.1
+Cypress Version: 13.8.1
+Kraken  Version: 1.0.24
+Web driver io : 8.36.1
+Appium:         2.5.4
+Faaker:         8.4.1
 
+-------------------------------------
 
 #pruebas automatizadas de sw en Kraken
 1. Clonar el Repositorio: git clone <URL del Repositorio>

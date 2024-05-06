@@ -1,4 +1,5 @@
 #Integrantes del equipo
+
 Danna Coral                       - d.corall@uniandes.edu.co
 Fabian Mauricio Quintero Castillo - f.quinteroc@uniandes.edu.co
 Wilder López                      - w.lopezm@uniandes.edu.co
@@ -7,7 +8,18 @@ Juan Gonzalo Castaño Rios         - j.castanor@uniandes.edu.co
 
 
 #pruebas automatizadas de sw en Kraken
+1. Clonar el Repositorio: git clone <URL del Repositorio>
+   
+2. Navegar al Directorio Kraken:  cd kraken
+   
+3. Instalar Dependencias: npm install
 
+Esto instalará todas las dependencias necesarias para ejecutar las pruebas. (npm install kraken-node, npm install android-platform-tools, npm install appium).
+4. Ejecutar las Pruebas: npx kraken-node run
+Este comando ejecutará todas las pruebas utilizando Kraken.
+
+Nota: Organización de las Pruebas
+Las pruebas están ubicadas en la carpeta features de Kraken. Se sugiere crear una nueva carpeta y mover las pruebas .feature allí para después ejecutarlas individualmente pegando cada prueba en la dirección kraken/features, ya que puede haber problemas al ejecutar todas las pruebas simultáneamente.
 
 #pruebas automatizadas de sw en Cypress
 

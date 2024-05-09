@@ -111,7 +111,32 @@ class PageCreatePublish {
 
         console.log(`***** La página "${tituloPage}" ha sido verificada en la sección de programados. *****`);
     }
-    
+    async verifyChangeUserNameP(expectedText){
+        //autor:Wilder
+        const assert = require('assert');
+        let bodyText = await this.driver.$('span.midgrey-l2').getText();
+        assert(bodyText.includes(expectedText), `Expected text "${expectedText}" not found in page`);        
+    }
+    async publishPageDraft(){
+        //@Autor: Wilder
+        await this.wait(2000);
+        await this.driver.$('a.ember-view.gh-btn-editor.gh-editor-back-button').click(); //Clicn boton cerrar
+    }
+    async verifyPageDraft(tituloPost){
+        //@Autor: wilder
+        await this.driver.url("https://ghost-aaej.onrender.com/ghost/#/pages?type=draft");
+        const tituloPublicado = await this.driver.$(`//h3[contains(text(),'${tituloPost}')]`);
+        if (tituloPublicado) {
+            console.log(`--La página "${tituloPost}" ha sido verificada en la sección de publicados.--`);
+        } else {
+            console.log(`--La página "${tituloPost}" NO ha sido verificada en la sección de publicados.--`);
+        }
+        console.log(`***** La página "${tituloPost}" ha sido verificada en la sección de publicados. *****`);
+    }
+    async asignarTagPage(tagTitulo){                
+        //@Autor: Wilder
+        await this.driver.$('form > div:nth-child(3) > div > div:nth-child(1)').setValue(tagTitulo);
+    }
 }
 
 module.exports = PageCreatePublish;

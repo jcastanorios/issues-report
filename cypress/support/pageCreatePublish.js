@@ -78,6 +78,33 @@ class PageCreatePublish {
         cy.log(`La página "${tituloPage}" ha sido actualizado correctamente.`);
         cy.wait(2000);
     }
+    verifyPageUserName(userName){
+        // Obtener el texto de todos los elementos y verificar que al menos uno este modificado
+        cy.get('span.midgrey-l2')
+        .first()
+        .invoke('text')
+        .should('eq', userName);        
+    }
+    closeNewPage(){
+        cy.get('a[href="#/pages/"]').first().click(); //clic post para cerrar
+        cy.wait(1000);
+    }
+    verifyPageDrawft(tituloPost) {
+        cy.visit("https://ghost-aaej.onrender.com/ghost/#/pages"); // Visitar los posts publicados
+        cy.get('section.view-actions > div > div:nth-child(1) > div:nth-child(1)').click({force:true})  //selección de All pages        
+        cy.contains('h3.gh-content-entry-title',tituloPost).should('exist');    
+    }
+    asignarTagPage(tagTitulo){                
+        cy.get('button.settings-menu-toggle.gh-btn.gh-btn-editor.gh-btn-icon.icon-only.gh-btn-action-icon').click() //click en panel lateral de settings
+        cy.get('form > div:nth-child(3) > div > div:nth-child(1)')
+            .click()
+            .type(tagTitulo,{delay:200})  //click en el tag y type
+        cy.get('ul.ember-power-select-options').first().click()
+        cy.get('button.settings-menu-toggle.gh-btn.gh-btn-editor.gh-btn-icon.icon-only.gh-btn-action-icon').click() //clic en panel lateral de settings
+    }
+
+
+
 }
 
 

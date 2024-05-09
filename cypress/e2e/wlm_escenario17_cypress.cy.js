@@ -1,48 +1,71 @@
+import LoginGhost from "../support/login"; // Importar módulo de inicio de sesión
+import { faker } from '@faker-js/faker'; // Importar faker para generar datos falsos
+import PageCreatePublish from "../support/pageCreatePublish";
+import userObjectModel from "../support/userObjectModel";
+
 describe('Escenario #17 - Crear un page, Modificar staff y validar los cambios en page', () => {
-    const postTitulo = 'Pagina de prueba WLM 19:05';
-    const UserNombre='Wilder Page';
+    let userName;
+    const USER_GHOST = "wilderlopezm@gmail.com"; 
+    const PASS_GHOST = "12345678901"; 
+
     beforeEach(()=>{
-        cy.visit('https://ghost-aaej.onrender.com/ghost/#signin')
-         cy.wait(3000)
-         cy.get('input[name=identification]').type('wilderlopezm@gmail.com')
-         cy.get('input[name=password]').type('12345678901')
-         cy.get('button[type=submit]').click()
-         cy.wait(2000)
+         //Iniciar sesión en ghost antes de comenzar la prueba
+         LoginGhost.visit(); 
+         LoginGhost.diligenciarEmail(USER_GHOST); 
+         LoginGhost.diligenciarPassword(PASS_GHOST); 
+         LoginGhost.clickBotonSignIn(); 
      })
-    it('Crear un nuevo page', () => {
-        //cy.get('section > div > ul:nth-child(3) > li:nth-child(1)').click() //click en page
-        cy.get('a[href="#/pages/"]').first().click(); //clic en la lista de page
-        cy.get('a[href="#/editor/page/"]').click()  //click en New page
-        cy.get('textarea.gh-editor-title').type(postTitulo)
-        cy.get('button.settings-menu-toggle.gh-btn.gh-btn-editor.gh-btn-icon.icon-only.gh-btn-action-icon').click() //click en panel lateral de settings		
-        cy.wait(2000);
-        cy.get('button.gh-btn.gh-btn-editor.darkgrey.gh-publish-trigger').click(); //Click en botón pubish
-        cy.get('button.gh-btn.gh-btn-black.gh-btn-large').click(); //Click en continue, final review
-        cy.get('button.gh-btn.gh-btn-large.gh-btn-pulse.ember-view').click(); //click en publish post, right now
-        cy.wait(1000);
-        cy.contains(postTitulo).should('exist'); //Verificaer si existe lo creado
-    })
-    it('Modificar el nombre del usuario', () => {
-        cy.get('a[href="#/settings/"]').click(); //Clic en la herramienta
-        cy.get('a[href="#/settings/staff/"]').click(); //Clic en Staff
-        cy.get('a[href="#/settings/staff/wilder/"]').click(); //Clic en Wilder
-        cy.get('#user-name').clear().type(UserNombre, { force: true }); //Cambiar el nombre
-        cy.wait(1000);
-        cy.get('button.gh-btn.gh-btn-primary.gh-btn-icon.ember-view').click(); //Click en save
-        cy.wait(1000);
-        cy.get('#user-name').should('have.value', UserNombre); //Verificar Lo cambiado
-        
-    })
-    it('Verificar cambio de nombre de usuario en listado de post', () => {
-        cy.get('a[href="#/pages/"]').first().click(); //clic en la lista de pages
-        // Obtener el texto de todos los elementos y verificar que al menos uno sea "WLM"
-        cy.get('span.midgrey-l2')
-        .first()
-        .invoke('text')
-        .should('eq', UserNombre);
-    })
+    it('Crear un nuevo page, modificar el nombre del usuario y verificar', () => {
+        let tituloPage; // Declarar variable para almacenar el título del page
+        tituloPage = createPublishPage(); // Llamar a la función para crear y publicar un page
+        enterPageDetails(tituloPage); // Llamar a la función para ingresar los detalles del page
+        publishPage(tituloPage); // Llamar a la función para publicar un page
+        checkPagePublished(tituloPage); // Llamar a la función para verificar que el page esté publicado
+        cy.wait(2000); // Esperar 2 segundos
+
+        userName = settingUser(); //Ingresar a cambiar nombre de usuario
+        enterChangeUser(userName); //Cambiar el nombre de usuario
+        verifyChangeUserName(userName); //verificar Cambio de Nombre
+
+        verifyPageUserName(userName);//Verificar cambio de nombre de usuario en listado de post
+    })        
 
 });   
+function verifyPageUserName(userName){
+    PageCreatePublish.visit();
+    PageCreatePublish.verifyPageUserName(userName);
+}
+function settingUser(){
+    userObjectModel.settingUser(); //Ingresar a cambiar nombre de usuario
+    const username = faker.commerce.productName();
+    return username;
+}
+function enterChangeUser(userName){
+    userObjectModel.enterChangeUser(userName);
+}
+function verifyChangeUserName(userName){
+    userObjectModel.verifyChangeUserName(userName);
+}
 
+function createPublishPage(){
+    const tituloPage = faker.commerce.productName(); // Generar un título de page aleatorio
 
- 
+    PageCreatePublish.visit(); // Visitar la página de page
+    PageCreatePublish.clickNewPage(); // Hacer clic en el botón "New page"
+
+    return tituloPage; 
+}
+
+function enterPageDetails(tituloPage){
+    PageCreatePublish.enterPageDetails(tituloPage);// Ingresar datos básicos del page
+}
+
+function publishPage(tituloPage){
+    //Publicar page
+    PageCreatePublish.publishPage(tituloPage); // Publicar page
+    cy.wait(2000); // Esperar 2 segundos
+}
+
+function checkPagePublished(tituloPage){
+    PageCreatePublish.verifyPagePublished(tituloPage); // Verificar que la página esté publicada
+}

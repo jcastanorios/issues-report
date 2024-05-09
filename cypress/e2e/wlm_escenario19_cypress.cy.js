@@ -1,33 +1,54 @@
+
+import { faker } from '@faker-js/faker'; // Importar faker para generar datos falsos
+import PageCreatePublish from '../support/pageCreatePublish';
+import LoginGhost from '../support/login';
 describe('Escenario #19 - Crear un page, y verificar si existe en la lista allpage', () => {
-    const pageTitulo = 'Pagina de prueba WLM 20:23';
+    let userName;
+    const USER_GHOST = "wilderlopezm@gmail.com"; 
+    const PASS_GHOST = "12345678901"; 
+
     beforeEach(()=>{
-        cy.visit('https://ghost-aaej.onrender.com/ghost/#signin')
-         cy.wait(3000)
-         cy.get('input[name=identification]').type('wilderlopezm@gmail.com')
-         cy.get('input[name=password]').type('12345678901')
-         cy.get('button[type=submit]').click()
-         cy.wait(2000)
-     })
-    it('Crear un nuevo page', () => {
-        cy.get('a[href="#/pages/"]').first().click(); //clic en la lista de page
-        cy.get('a[href="#/editor/page/"]').click()  //click en New page
-        cy.get('textarea.gh-editor-title').type(pageTitulo)
-        cy.get('button.settings-menu-toggle.gh-btn.gh-btn-editor.gh-btn-icon.icon-only.gh-btn-action-icon').click() //click en panel lateral de settings
-        cy.wait(2000);
-        cy.get('a[href="#/pages/"]').first().click(); //clic pages para cerrar
-        cy.wait(1000);
-        cy.get('section.view-container.content-list > div:nth-child(1) > ol > li')
-        .find('h3.gh-content-entry-title')
-        .contains(pageTitulo)
-        .should('exist')
+        //Iniciar sesión en ghost antes de comenzar la prueba
+        LoginGhost.visit(); 
+        LoginGhost.diligenciarEmail(USER_GHOST); 
+        LoginGhost.diligenciarPassword(PASS_GHOST); 
+        LoginGhost.clickBotonSignIn();      
     })
-    it('Verificar que exista en la lista allpage', () => {
-        cy.get('a[href="#/pages/"]').first().click(); //clic en la lista de pages
-        cy.get('section.view-actions > div > div:nth-child(1) > div:nth-child(1)').click({force:true})  //selección de All pages        
-        cy.contains('h3.gh-content-entry-title', pageTitulo).should('exist');
+    it('Crear un nuevo page y Verificar que exista en la lista allpage con estado borrador', () => {
+        let tituloPage = createPublishPage(); //Abre la ventana para crear la publicación
+        enterPageDetails(tituloPage); //Ingresar el texto de la página
+
+        closeNewPage();//Cerrar el post para guardar en borrador
+        verifyPageDrawft(tituloPage); //Verificar si la publicación está en borrador
     })
 
 });   
+function verifyPageDrawft(tituloPage){
+    PageCreatePublish.verifyPageDrawft(tituloPage);
+}
+function closeNewPage(){
+    PageCreatePublish.closeNewPage();//Cierre la edición del post
+}
 
+function createPublishPage(){
+    const tituloPage = faker.commerce.productName(); // Generar un título de page aleatorio
 
- 
+    PageCreatePublish.visit(); // Visitar la página de page
+    PageCreatePublish.clickNewPage(); // Hacer clic en el botón "New page"
+
+    return tituloPage; 
+}
+
+function enterPageDetails(tituloPage){
+    PageCreatePublish.enterPageDetails(tituloPage);// Ingresar datos básicos del page
+}
+
+function publishPage(tituloPage){
+    //Publicar page
+    PageCreatePublish.publishPage(tituloPage); // Publicar page
+    cy.wait(2000); // Esperar 2 segundos
+}
+
+function checkPagePublished(tituloPage){
+    PageCreatePublish.verifyPagePublished(tituloPage); // Verificar que la página esté publicada
+}

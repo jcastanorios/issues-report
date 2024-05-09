@@ -1,41 +1,66 @@
+import { faker } from '@faker-js/faker'; // Importar faker para generar datos falsos
+import tagCreate from "../support/tagCreate";
+import PageCreatePublish from '../support/pageCreatePublish';
+import LoginGhost from '../support/login';
+
 describe('Escenario #20 - Crear un tag, y asignarle a un page', () => {
+
+    let userName;
+    const USER_GHOST = "wilderlopezm@gmail.com"; 
+    const PASS_GHOST = "12345678901"; 
+    
     const pageTitulo = 'Pagina de prueba WLM 00:03';
     const tagTitulo = "Tag nuevo BS 00_03";
     beforeEach(()=>{
-        cy.visit('https://ghost-aaej.onrender.com/ghost/#signin')
-         cy.wait(3000)
-         cy.get('input[name=identification]').type('wilderlopezm@gmail.com')
-         cy.get('input[name=password]').type('12345678901')
-         cy.get('button[type=submit]').click()
-         cy.wait(2000)
-     })
-     it('Crear un nuevo tag',() => {
-        cy.get('section > div > ul:nth-child(2) > li:nth-child(3)').click() //click en Tag
-        cy.get('a.ember-view.gh-btn.gh-btn-primary').click()  //click en New tag
-        cy.get('input#tag-name.gh-input').type(tagTitulo) //nombre
-        cy.get('input[placeholder=15171A]').type('7a0000') //color rojo
-        cy.get('textarea#tag-description.gh-input.gh-tag-details-textarea').type(tagTitulo+' Prueba') //description
-        cy.get('button.gh-btn.gh-btn-primary.gh-btn-icon.ember-view').click()//save
-     })
-     it('Crear un nuevo page', () => {
-        cy.get('a[href="#/pages/"]').first().click(); //clic en la lista de page
-        cy.get('a[href="#/editor/page/"]').click()  //click en New page
-        cy.get('textarea.gh-editor-title').type(pageTitulo)
-        //Asignado tag
-        cy.get('button.settings-menu-toggle.gh-btn.gh-btn-editor.gh-btn-icon.icon-only.gh-btn-action-icon').click() //click en panel lateral de settings
-        cy.get('form > div:nth-child(3) > div > div:nth-child(1)')
-            .click()
-            .type(tagTitulo,{delay:200})  //click en el tag y type
-        cy.get('ul.ember-power-select-options').first().click()
-        cy.get('button.settings-menu-toggle.gh-btn.gh-btn-editor.gh-btn-icon.icon-only.gh-btn-action-icon').click() //clic en panel lateral de settings
-        cy.wait(2000);
-        cy.get('button.gh-btn.gh-btn-editor.darkgrey.gh-publish-trigger').click(); //Click en botón pubish
-        cy.get('button.gh-btn.gh-btn-black.gh-btn-large').click(); //Click en continue, final review
-        cy.get('button.gh-btn.gh-btn-large.gh-btn-pulse.ember-view').click(); //click en publish post, right now
-        cy.wait(1000);
-        cy.contains(pageTitulo).should('exist'); //Verificar si existe lo creado
+        //Iniciar sesión en ghost antes de comenzar la prueba
+        LoginGhost.visit(); 
+        LoginGhost.diligenciarEmail(USER_GHOST); 
+        LoginGhost.diligenciarPassword(PASS_GHOST); 
+        LoginGhost.clickBotonSignIn();              
+    })
+    it('Crear un nuevo tag, Crear un nuevo page y asignarle el tag creado',() => {
+        let tagTitulo = CreateNewTag(); //Crear el tag ->Click en new tag
+        EnterNewTag(tagTitulo);//Creación del tag, con los datos titulo, color y descripción
+
+        let pageTitulo = createPublishPage() //Crea el post -> click en post y new post
+        enterPageDetails(pageTitulo); //Ingresa el titulo del post
+        asignarTagPage(tagTitulo)//Asignación del tag al post
+        publishPage(pageTitulo)//Publicar page
+        checkPagePublished(pageTitulo); //Verificar si el post con tag estén publicados
     })
 });   
-
-
+function asignarTagPage(tagTitulo){
+    PageCreatePublish.asignarTagPage(tagTitulo);
+}
+function CreateNewTag(){
+    tagCreate.visit();
+    tagCreate.clickNewTag();
+    const tituloTag = faker.commerce.isbn();
+    return tituloTag;
+}
+function EnterNewTag(tituloTag){
+    tagCreate.CreateNewTag(tituloTag);
+}
  
+function createPublishPage(){
+    const tituloPage = faker.commerce.productName(); // Generar un título de page aleatorio
+
+    PageCreatePublish.visit(); // Visitar la página de page
+    PageCreatePublish.clickNewPage(); // Hacer clic en el botón "New page"
+
+    return tituloPage; 
+}
+
+function enterPageDetails(tituloPage){
+    PageCreatePublish.enterPageDetails(tituloPage);// Ingresar datos básicos del page
+}
+
+function publishPage(tituloPage){
+    //Publicar page
+    PageCreatePublish.publishPage(tituloPage); // Publicar page
+    cy.wait(2000); // Esperar 2 segundos
+}
+
+function checkPagePublished(tituloPage){
+    PageCreatePublish.verifyPagePublished(tituloPage); // Verificar que la página esté publicada
+}

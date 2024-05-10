@@ -1,37 +1,44 @@
+import LoginGhost from "../support/login";
+import PostCreatePublish from "../support/postCreatePublish";
+import { faker } from '@faker-js/faker'; // Importar faker para generar datos falsos
+
 describe('Escenario #18 - Crear un post, y verificar que este publicado en borrador', () => {
-    const postTitulo = 'Post de prueba WLM 00:36';
+    let userName;
+    const USER_GHOST = "wilderlopezm@gmail.com"; 
+    const PASS_GHOST = "12345678901"; 
+
     beforeEach(()=>{
-        cy.visit('https://ghost-aaej.onrender.com/ghost/#signin')
-         cy.wait(3000)
-         cy.get('input[name=identification]').type('wilderlopezm@gmail.com')
-         cy.get('input[name=password]').type('12345678901')
-         cy.get('button[type=submit]').click()
-         cy.wait(2000)
+         //Iniciar sesión en ghost antes de comenzar la prueba
+         LoginGhost.visit(); 
+         LoginGhost.diligenciarEmail(USER_GHOST); 
+         LoginGhost.diligenciarPassword(PASS_GHOST); 
+         LoginGhost.clickBotonSignIn(); 
      })
-     it('Crear un nuevo post', () => {
-        cy.get('section > div > ul:nth-child(2) > li:nth-child(1)').click() //click en post
-        cy.get('a.ember-view.gh-btn.gh-btn-primary').click()  //click en New Post
-        cy.get('textarea.gh-editor-title').type(postTitulo)
-        cy.get('button.settings-menu-toggle.gh-btn.gh-btn-editor.gh-btn-icon.icon-only.gh-btn-action-icon').click() //click en panel lateral de settings
+     it('Crear un nuevo post, Verificar que este en la lista de borrador', () => {
+        let tituloPost = createPublishPost(); //Creación del nuevo post
+        enterPostDetails(tituloPost);//ingrese el titulo
         cy.wait(2000);
-        cy.get('a[href="#/posts/"]').first().click(); //clic post para cerrar
-        cy.wait(1000);
-        cy.get('section.view-container.content-list > div:nth-child(1) > ol > li')
-        .find('h3.gh-content-entry-title')
-        .contains(postTitulo)
-        .should('exist')
-
-    })
-    it('Verificar que este en la lista de publicados', () => {
-        cy.get('a[href="#/posts/?type=draft"]').first().click(); //clic en la lista de post
-        cy.get('section.view-actions > div > div:nth-child(1) > div:nth-child(1)').click({force:true})  //selección de All post        
-        cy.get('section.view-container.content-list > div:nth-child(1) > ol > li')
-            .find('h3.gh-content-entry-title')
-            .contains(postTitulo)
-            .should('exist')
+        closeNewPost();//Cerrar el post para guardar en borrador
+        verifyPostDrawft(tituloPost); //Verificar si la publicación está en borrador
     })
 
-});   
+});  
 
+function verifyPostDrawft(tituloPost){
+    PostCreatePublish.verifyPostDrawft(tituloPost);
+}
+function closeNewPost(){
+    PostCreatePublish.closeNewPost();//Cierre la edición del post
+}
+function enterPostDetails(tituloPost){
+    PostCreatePublish.enterPostDetails(tituloPost); // Ingresar datos básicos del post
+}
 
- 
+function createPublishPost(){
+    const tituloPost = faker.commerce.productName(); // Generar un título de post aleatorio
+
+    PostCreatePublish.visit(); // Visitar la página de posts
+    PostCreatePublish.clickNewPost(); // Hacer clic en el botón "New post"
+
+    return tituloPost;
+}

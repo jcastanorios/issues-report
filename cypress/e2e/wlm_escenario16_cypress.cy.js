@@ -1,47 +1,69 @@
+import LoginGhost from "../support/login"; // Importar módulo de inicio de sesión
+import postCreatePublish from "../support/postCreatePublish";
+import PostCreatePublish from "../support/postCreatePublish"; // Importar el Page Object creado
+import userObjectModel from "../support/userObjectModel";
+import { faker } from '@faker-js/faker'; // Importar faker para generar datos falsos
+
 describe('Escenario #16 - Crear un post, Modificar staff y validar los cambios en Post', () => {
-    const postTitulo = 'Prueba wlm 15:22';
-    const UserNombre='Wilder LM';
+    let userName;
+    const USER_GHOST = "wilderlopezm@gmail.com"; 
+    const PASS_GHOST = "12345678901"; 
+
     beforeEach(()=>{
-        cy.visit('https://ghost-aaej.onrender.com/ghost/#signin')
-         cy.wait(3000)
-         cy.get('input[name=identification]').type('wilderlopezm@gmail.com')
-         cy.get('input[name=password]').type('12345678901')
-         cy.get('button[type=submit]').click()
-         cy.wait(2000)
+         //Iniciar sesión en ghost antes de comenzar la prueba
+         LoginGhost.visit(); 
+         LoginGhost.diligenciarEmail(USER_GHOST); 
+         LoginGhost.diligenciarPassword(PASS_GHOST); 
+         LoginGhost.clickBotonSignIn(); 
      })
-    it('Crear un nuevo post', () => {
-        cy.get('section > div > ul:nth-child(2) > li:nth-child(1)').click() //click en post
-        cy.get('a.ember-view.gh-btn.gh-btn-primary').click()  //click en New Post
-        cy.get('textarea.gh-editor-title').type(postTitulo)
-		cy.get('button.settings-menu-toggle.gh-btn.gh-btn-editor.gh-btn-icon.icon-only.gh-btn-action-icon').click() //click en panel lateral de settings
-        cy.wait(2000);
-        cy.get('button.gh-btn.gh-btn-editor.darkgrey.gh-publish-trigger').click(); //Click en botón pubish
-        cy.get('button.gh-btn.gh-btn-black.gh-btn-large').click(); //Click en continue, final review
-        cy.get('button.gh-btn.gh-btn-large.gh-btn-pulse.ember-view').click(); //click en publish post, right now
-        cy.wait(1000);
-        cy.contains(postTitulo).should('exist'); //Verificaer si existe lo creado
-    })
-    it('Modificar el nombre del usuario', () => {
-        cy.get('a[href="#/settings/"]').click(); //Clic en la herramienta
-        cy.get('a[href="#/settings/staff/"]').click(); //Clic en Staff
-        cy.get('a[href="#/settings/staff/wilder/"]').click(); //Clic en Wilder
-        cy.get('#user-name').clear().type(UserNombre, { force: true }); //Cambiar el nombre
-        cy.wait(1000);
-        cy.get('button.gh-btn.gh-btn-primary.gh-btn-icon.ember-view').click(); //Click en save
-        cy.wait(1000);
-        cy.get('#user-name').should('have.value', UserNombre); //Verificar Lo cambiado
-        
-    })
-    it('Verificar cambio de nombre de usuario en listado de post', () => {
-        cy.get('a[href="#/posts/"]').first().click(); //clic en la lista de post
-        // Obtener el texto de todos los elementos y verificar que al menos uno sea "WLM"
-        cy.get('span.midgrey-l2')
-        .first()
-        .invoke('text')
-        .should('eq', UserNombre);
-    })
+    it('Crear un nuevo post, Modificar el nombre del usuario y verificar el cambio', () => {
+        let postTitulo = createPublishPost() //Crea el post -> click en post y new post
+        enterPostDetails(postTitulo); //Ingresa el titulo del post
+        publishPost(postTitulo)//Publicar post
+        checkPostPublished(postTitulo)//Verificar que el post este publicado
 
+        userName = settingUser(); //Ingresar a cambiar nombre de usuario
+        enterChangeUser(userName); //Cambiar el nombre de usuario
+        verifyChangeUserName(userName); //verificar Cambio de Nombre
+        verifyPostUserName(userName);//Verificar cambio de nombre de usuario en listado de post
+    })
 });   
+function verifyPostUserName(userName){
+    postCreatePublish.visit();
+    postCreatePublish.verifyPostUserName(userName)
+}
+function settingUser(){
+    userObjectModel.settingUser(); //Ingresar a cambiar nombre de usuario
+    const username = faker.commerce.productName();
+    return username;
+}
+function enterChangeUser(userName){
+    userObjectModel.enterChangeUser(userName);
+}
+function verifyChangeUserName(userName){
+    userObjectModel.verifyChangeUserName(userName);
+}
+function enterPostDetails(tituloPost){
+    PostCreatePublish.enterPostDetails(tituloPost); // Ingresar datos básicos del post
+}
 
+function createPublishPost(){
+    const tituloPost = faker.commerce.productName(); // Generar un título de post aleatorio
+
+    PostCreatePublish.visit(); // Visitar la página de posts
+    PostCreatePublish.clickNewPost(); // Hacer clic en el botón "New post"
+
+    return tituloPost;
+}
+
+function publishPost(tituloPost){
+    //Publicar post
+    PostCreatePublish.publishPost(tituloPost); // Publicar post
+    cy.wait(2000); // Esperar 2 segundos
+}
+
+function checkPostPublished(tituloPost){
+    PostCreatePublish.verifyPostPublished(tituloPost); // Verificar que el post esté publicado
+}
 
  

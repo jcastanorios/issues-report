@@ -82,6 +82,31 @@ class PostCreatePublish {
         cy.log(`El post "${tituloPost}" ha sido actualizado correctamente.`);
         cy.wait(2000);
     }
+    verifyPostUserName(userName){
+        // Obtener el texto de todos los elementos y verificar que al menos uno sea "WLM"
+        cy.get('span.midgrey-l2')
+        .first()
+        .invoke('text')
+        .should('eq', userName);        
+    }
+    closeNewPost(){
+        cy.get('a[href="#/posts/"]').first().click(); //clic post para cerrar
+        cy.wait(1000);
+    }
+    verifyPostDrawft(tituloPost) {
+        cy.visit("https://ghost-aaej.onrender.com/ghost/#/posts?type=draft"); // Visitar los posts publicados
+        cy.get('h3.gh-content-entry-title').contains(tituloPost).should('be.visible');
+        cy.log(`El post "${tituloPost}" ha sido verificado en la pagina de publicados.`);
+    }
+
+    asignarTagPost(tagTitulo){                
+        cy.get('button.settings-menu-toggle.gh-btn.gh-btn-editor.gh-btn-icon.icon-only.gh-btn-action-icon').click() //click en panel lateral de settings
+        cy.get('form > div:nth-child(3) > div > div:nth-child(1)')
+            .click()
+            .type(tagTitulo,{delay:200})  //click en el tag y type
+        cy.get('ul.ember-power-select-options').first().click()
+        cy.get('button.settings-menu-toggle.gh-btn.gh-btn-editor.gh-btn-icon.icon-only.gh-btn-action-icon').click() //clic en panel lateral de settings
+    }
 }
 
 

@@ -1,9 +1,9 @@
 const { Given, When, Then } = require('@cucumber/cucumber');
-When('I enter email {kraken-string}', async function (email) {
+When('I enter email1 {kraken-string}', async function (email) {
     let element = await this.driver.$('input[name=identification]');
     return await element.setValue(email);
 });
-When('I enter password {kraken-string}', async function (password) {
+When('I enter password1 {kraken-string}', async function (password) {
     let element = await this.driver.$('input[name=password]'); 
     return await element.setValue(password);
 });
@@ -92,4 +92,3 @@ Then('I verificar cambio de nombre de usuario en listado de post {kraken-string}
     // Verificar que el texto esperado está presente en la página
     //expect(bodyText.includes(expectedText)).toBe(true);    
 });
-

@@ -1,4 +1,5 @@
 const { faker } = require('@faker-js/faker');
+const assert = require('assert');
 
 class PostCreatePublish {
     constructor(driver) {
@@ -30,7 +31,7 @@ class PostCreatePublish {
         const contenidoPost = faker.lorem.paragraph(3);
         let element2 = await this.driver.$('div[data-placeholder="Begin writing your post..."]');
         await element2.setValue(contenidoPost);
-        await this.wait(5000);
+        await this.wait(2000);
     }
 
     async publishPost(tituloPost) {
@@ -132,6 +133,60 @@ class PostCreatePublish {
         }
         console.log(`***** La página "${tituloPost}" ha sido verificada en la sección de publicados. *****`);
     }
+
+    //@Autor: Danna
+    async postSettings() {
+        await this.driver.$('button.settings-menu-toggle.gh-btn.gh-btn-editor.gh-btn-icon.icon-only.gh-btn-action-icon').click();
+        await this.wait(1000);
+    }
+
+    async enterTagValue(tagValue) {
+        await this.driver.$('div#tag-input').click();  //click tag box
+        await this.wait(1000);
+        let element = await this.driver.$('form > div:nth-child(3) > div > div:nth-child(1)'); //enter tag value
+        await element.setValue(tagValue)
+        await this.wait(1000);
+        await this.driver.$('ul.ember-power-select-options:first-child').click(); // select tag value
+        await this.wait(1000);
+    }
+
+    async allTagFilter(){
+        await this.driver.$('section.view-actions > div > div:nth-child(4) > div:nth-child(1)').click()
+        await this.wait(2000);
+    }
     
+    async selectAllTagFilter(tagValue){
+        let dropdownList = await this.driver.$('body > div:nth-child(1) > div > ul.ember-power-select-options');
+    
+        // Obtener todos los elementos de la lista desplegable
+        let dropdownOptions = await dropdownList.$$('li');
+    
+        // Iterar sobre los elementos para encontrar el que contiene el texto 
+        for (let option of dropdownOptions) {
+            let text = await option.getText();
+            if (text.includes(tagValue)) {
+                await option.click();
+                break; // Salir del bucle una vez que se hace clic en el elemento deseado
+            }
+        }
+    }
+
+    async postTagListed(postTitle){
+        let enlacePost = await this.driver.$(`//a[contains(., '${postTitle}')]`);
+
+        if (enlacePost){
+            assert.ok(true)
+        }
+        else {
+            console.log(`No encuentra titulo!!!--`);
+    }   
+    }
+
+    async unpublishPost(){
+        await this.driver.$('button.gh-btn.gh-btn-editor.darkgrey.gh-unpublish-trigger').click()
+        await this.wait(1000);
+        await this.driver.$('button.gh-revert-to-draft').click()
+        await this.wait(1000);
+    }
 }
 module.exports = PostCreatePublish;

@@ -77,6 +77,25 @@ When('I create, publish, and verify a post with empty fields', async () => {
     await checkPostPublished(postTitle);
 });
 
+//danna
+let postTitle2 = faker.commerce.productName();
+When('I edit a post two', async () => {
+    await createPublishPost(postTitle2);
+    await enterPostDetails(postTitle2);
+    await publishPost(postTitle2);
+    await checkPostPublished(postTitle2);
+    
+    let nuevoTituloPost = faker.commerce.productName(); // Generar un nuevo título de post aleatorio
+    await postCreatePublish.editPost(postTitle2, nuevoTituloPost); // Editar post
+    await postCreatePublish.updatePost(nuevoTituloPost); // Publicar post editado
+});
+When('I unpublish a post and validate as draft', async () => {
+    await postCreatePublish.unpublishPost()
+    await postCreatePublish.verifyPostDraft(postTitle2)
+})
+
+
+
 When('I create, draft, and verify a post', async () => {
     //Autor:Wilder
     let postTitle = faker.commerce.productName();

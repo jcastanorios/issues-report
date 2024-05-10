@@ -13,9 +13,9 @@ describe("Escenario para validar y verificar la creación y la publicación de u
         LoginGhost.visit(); 
         LoginGhost.diligenciarEmail(USER_GHOST); 
         LoginGhost.diligenciarPassword(PASS_GHOST);
-        ScreenshotPage.takeScreenshot('Post Tests', 'login'); 
+        ScreenshotPage.takeScreenshot('Page Tests', 'login'); 
         LoginGhost.clickBotonSignIn(); 
-        ScreenshotPage.takeScreenshot('Post Tests', 'dashboard');
+        ScreenshotPage.takeScreenshot('Page Tests', 'dashboard');
     });
 
     it("Primer caso: Crear, publicar y verificar PAGE en Ghost ...", () => {

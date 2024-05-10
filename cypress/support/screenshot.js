@@ -1,4 +1,9 @@
 
+Cypress.Screenshot.defaults({
+  capture: 'viewport',
+  disableTimersAndAnimations: false
+})
+
 const ScreenshotPage = {
     
     takeScreenshot(folderName, fileName) {

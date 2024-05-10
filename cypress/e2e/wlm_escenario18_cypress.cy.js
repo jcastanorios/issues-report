@@ -1,17 +1,15 @@
 import LoginGhost from "../support/login";
 import PostCreatePublish from "../support/postCreatePublish";
 import { faker } from '@faker-js/faker'; // Importar faker para generar datos falsos
+import { Constantes } from "../support/constantes";
 
 describe('Escenario #18 - Crear un post, y verificar que este publicado en borrador', () => {
     let userName;
-    const USER_GHOST = "wilderlopezm@gmail.com"; 
-    const PASS_GHOST = "12345678901"; 
-
     beforeEach(()=>{
          //Iniciar sesión en ghost antes de comenzar la prueba
          LoginGhost.visit(); 
-         LoginGhost.diligenciarEmail(USER_GHOST); 
-         LoginGhost.diligenciarPassword(PASS_GHOST); 
+         LoginGhost.diligenciarEmail(Constantes.USER_GHOST); 
+         LoginGhost.diligenciarPassword(Constantes.PASS_GHOST); 
          LoginGhost.clickBotonSignIn(); 
      })
      it('Crear un nuevo post, Verificar que este en la lista de borrador', () => {

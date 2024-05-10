@@ -1,8 +1,14 @@
+import { Constantes } from "./constantes";
+
 class UserObjectModel{
     settingUser(){
         cy.get('a[href="#/settings/"]').click(); //Clic en la herramienta
         cy.get('a[href="#/settings/staff/"]').click(); //Clic en Staff
-        cy.get('a[href="#/settings/staff/wilder/"]').click(); //Clic en Wilder
+        if(Constantes.VERSION_GHOST ==5){
+            cy.get('a[href="#/settings/staff/wilder/"]').click(); //Clic en Wilder
+        }else if(Constantes.VERSION_GHOST==4){
+            cy.get('h3.apps-card-app-title').click(); //Clic en Wilder
+        }
     }
     enterChangeUser(UserName){
         cy.get('#user-name').clear().type(UserName, { force: true }); //Cambiar el nombre

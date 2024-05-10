@@ -1,9 +1,10 @@
 import { faker } from '@faker-js/faker'; // Importar faker para generar datos falsos
+import { Constantes } from "../support/constantes";
 import ScreenshotPage from "../support/screenshot"; // Importar módulo para capturar pantallas
 
 class PageCreatePublish {
     visit(nombreEscenario) {
-        cy.visit("https://ghost-aaej.onrender.com/ghost/#/pages");
+        this.visitPages("");
         ScreenshotPage.takeScreenshot('Page Tests', `${nombreEscenario}/pagePages`);
     }
 
@@ -28,24 +29,32 @@ class PageCreatePublish {
     }
 
     publishPage(tituloPage, nombreEscenario) {
-        cy.get('button.gh-btn-editor.darkgrey.gh-publish-trigger').contains('Publish').click();
-        ScreenshotPage.takeScreenshot('Page Tests', `${nombreEscenario}/publishPage 1`);
-        cy.get('div.gh-publish-setting-trigger').contains('Right now').should('be.visible');
-        ScreenshotPage.takeScreenshot('Page Tests', `${nombreEscenario}/publishPageRightNow 2`);
-        cy.get('div.gh-publish-cta').contains('Continue, final review →').click();
-        ScreenshotPage.takeScreenshot('Page Tests', `${nombreEscenario}/publishPageFinalReview 3`);
-        cy.get('div.gh-publish-title').contains('Ready, set, publish.').should('be.visible');
-        cy.get('div.gh-publish-title').contains('Share it with the world.').should('be.visible');
-        cy.get('button[class="gh-btn gh-btn-large gh-btn-pulse ember-view"]').contains('Publish page, right now').click();
-        ScreenshotPage.takeScreenshot('Page Tests', `${nombreEscenario}/publishPageFinal 4`);
-        cy.contains(tituloPage).should('be.visible'); // Verificar que el page publicado esté visible
-        cy.log(`La página "${tituloPage}" ha sido publicada correctamente.`);
-        cy.wait(2000);
-        cy.get('button[class="gh-back-to-editor"]').contains('Back to editor').click();
+        if(Constantes.VERSION_GHOST==5){
+            cy.get('button.gh-btn-editor.darkgrey.gh-publish-trigger').contains('Publish').click();
+            ScreenshotPage.takeScreenshot('Page Tests', `${nombreEscenario}/publishPage 1`);
+            cy.get('div.gh-publish-setting-trigger').contains('Right now').should('be.visible');
+            ScreenshotPage.takeScreenshot('Page Tests', `${nombreEscenario}/publishPageRightNow 2`);
+            cy.get('div.gh-publish-cta').contains('Continue, final review →').click();
+            ScreenshotPage.takeScreenshot('Page Tests', `${nombreEscenario}/publishPageFinalReview 3`);
+            cy.get('div.gh-publish-title').contains('Ready, set, publish.').should('be.visible');
+            cy.get('div.gh-publish-title').contains('Share it with the world.').should('be.visible');
+            cy.get('button[class="gh-btn gh-btn-large gh-btn-pulse ember-view"]').contains('Publish page, right now').click();
+            ScreenshotPage.takeScreenshot('Page Tests', `${nombreEscenario}/publishPageFinal 4`);
+            cy.contains(tituloPage).should('be.visible'); // Verificar que el page publicado esté visible
+            cy.log(`La página "${tituloPage}" ha sido publicada correctamente.`);
+            cy.wait(2000);
+            cy.get('button[class="gh-back-to-editor"]').contains('Back to editor').click();
+        }
+        else if(Constantes.VERSION_GHOST==4){
+            cy.get('div.ember-view.ember-basic-dropdown-trigger.gh-btn.gh-btn-editor.gh-publishmenu-trigger').click();
+            cy.get('button.gh-btn.gh-btn-black.gh-publishmenu-button.gh-btn-icon.ember-view').click();
+            cy.get('button.gh-btn.gh-btn-black.gh-btn-icon.ember-view').click();            
+        }
     }
 
     verifyPagePublished(tituloPage, nombreEscenario) {
-        cy.visit("https://ghost-aaej.onrender.com/ghost/#/pages?type=published"); // Visitar pages publicadas
+        this.visitPages("?type=published");
+        //cy.visit("https://ghost-aaej.onrender.com/ghost/#/pages?type=published"); // Visitar pages publicadas
         ScreenshotPage.takeScreenshot('Page Tests', `${nombreEscenario}/checkPagePublication`);
         cy.get('h3.gh-content-entry-title').contains(tituloPage).should('be.visible');
         cy.log(`La página "${tituloPage}" ha sido verificado en la sección de publicados.`);
@@ -71,14 +80,16 @@ class PageCreatePublish {
     }
 
     verifyPageScheduled(tituloPage, nombreEscenario) {
-        cy.visit("https://ghost-aaej.onrender.com/ghost/#/pages?type=scheduled"); // Visitar pages programadas
+        this.visitPages("?type=scheduled");
+        //cy.visit("https://ghost-aaej.onrender.com/ghost/#/pages?type=scheduled"); // Visitar pages programadas
         ScreenshotPage.takeScreenshot('Page Tests', `${nombreEscenario}/checkSchedulePublishPage`);
         cy.get('h3.gh-content-entry-title').contains(tituloPage);
         cy.log(`La página "${tituloPage}" ha sido verificado en la sección de programados.`);
     }
 
     editPage(tituloPage, nombreEscenario){
-        cy.visit("https://ghost-aaej.onrender.com/ghost/#/pages?type=published"); // Visitar las pages publicados
+        this.visitPages("?type=published");
+        //cy.visit("https://ghost-aaej.onrender.com/ghost/#/pages?type=published"); // Visitar las pages publicados
         cy.get('h3.gh-content-entry-title').contains(tituloPage).click(); // Hacer clic en la page a editar
         ScreenshotPage.takeScreenshot('Page Tests', `${nombreEscenario}/editPage`);
     }
@@ -111,7 +122,8 @@ class PageCreatePublish {
         cy.wait(1000);
     }
     verifyPageDrawft(tituloPost) {
-        cy.visit("https://ghost-aaej.onrender.com/ghost/#/pages"); // Visitar los posts publicados
+        this.visitPages("");
+        //cy.visit("https://ghost-aaej.onrender.com/ghost/#/pages"); // Visitar los posts publicados
         cy.get('section.view-actions > div > div:nth-child(1) > div:nth-child(1)').click({force:true})  //selección de All pages        
         cy.contains('h3.gh-content-entry-title',tituloPost).should('exist');    
     }
@@ -124,7 +136,10 @@ class PageCreatePublish {
         cy.get('button.settings-menu-toggle.gh-btn.gh-btn-editor.gh-btn-icon.icon-only.gh-btn-action-icon').click() //clic en panel lateral de settings
     }
 
-
+    visitPages(tipo){
+        if (Constantes.VERSION_GHOST==5){cy.visit("https://ghost-aaej.onrender.com/ghost/#/pages"+tipo);}
+        else if(Constantes.VERSION_GHOST==4){cy.visit("https://ghost-t6x4.onrender.com/ghost/#/pages"+tipo)}
+    }
 
 }
 

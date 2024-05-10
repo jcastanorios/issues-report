@@ -27,7 +27,7 @@ class PageCreatePublish {
         let element = await this.driver.$('input[name="searchKeyword"]');
         await element.setValue(tituloPage);
         await element.keys("Enter"); // Envía la tecla Enter
-        await this.wait(8000);
+        await this.wait(3000);
         await this.takeScreenshotTest.takeScreenshotPage(`Page Tests/${nombreEscenario}`, 'imageSearch');
         await this.driver.$('//a[contains(text(), "Insert image")]').click();
     }
@@ -39,7 +39,7 @@ class PageCreatePublish {
         let element2 = await this.driver.$('div[data-placeholder="Begin writing your page..."]');
         await element2.setValue(contenidoPage);
         await this.takeScreenshotTest.takeScreenshotPage(`Page Tests/${nombreEscenario}`, 'pageDetails');
-        await this.wait(5000);
+        await this.wait(2000);
     }
 
     async publishPage(tituloPage, nombreEscenario) {

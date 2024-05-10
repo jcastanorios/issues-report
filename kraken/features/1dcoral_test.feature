@@ -1,6 +1,6 @@
 Feature: Test Tags, creates, edit and delete
 
-@user1 @web   //ya pasoooo
+@user1 @web  
 Scenario: Crear, y validar un tag
   Given I am logged into the Ghost application
   And I wait for 2 seconds

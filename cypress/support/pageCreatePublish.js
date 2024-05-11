@@ -5,19 +5,19 @@ import ScreenshotPage from "../support/screenshot"; // Importar módulo para cap
 class PageCreatePublish {
     visit(nombreEscenario) {
         this.visitPages("");
-        ScreenshotPage.takeScreenshot('Page Tests', `${nombreEscenario}/pagePages`);
+        ScreenshotPage.takeScreenshot(nombreEscenario, 'pagePages');
     }
 
     clickNewPage(nombreEscenario) {
          cy.contains("New page").click();
-         ScreenshotPage.takeScreenshot('Page Tests', `${nombreEscenario}/newPage`);
+         ScreenshotPage.takeScreenshot(nombreEscenario, 'newPage');
     }
 
     selectImageForPage(tituloPage, nombreEscenario) {
         cy.get('path[d="M83.86 54.15v34.13H38.57V54.15H0v68.26h122.43V54.15H83.86zM38.57 0h45.3v34.13h-45.3z"]').click({ force: true });
-        ScreenshotPage.takeScreenshot('Page Tests', `${nombreEscenario}/addImage`);
+        ScreenshotPage.takeScreenshot(nombreEscenario, 'addImage');
         cy.get('input[name="searchKeyword"]').type(tituloPage);
-        ScreenshotPage.takeScreenshot('Page Tests', `${nombreEscenario}/imageSearch`);
+        ScreenshotPage.takeScreenshot(nombreEscenario, 'imageSearch');
         cy.get('a.gh-unsplash-button').contains('Insert image').click();
     }
 
@@ -25,21 +25,21 @@ class PageCreatePublish {
         cy.get('textarea[placeholder="Page title"]').type(tituloPage);
         const contenidoPage = faker.lorem.paragraph(3);
         cy.get('div[data-placeholder="Begin writing your page..."]').type(contenidoPage);
-        ScreenshotPage.takeScreenshot('Page Tests', `${nombreEscenario}/pageDetails`);
+        ScreenshotPage.takeScreenshot(nombreEscenario, 'pageDetails');
     }
 
     publishPage(tituloPage, nombreEscenario) {
         if(Constantes.VERSION_GHOST==5){
             cy.get('button.gh-btn-editor.darkgrey.gh-publish-trigger').contains('Publish').click();
-            ScreenshotPage.takeScreenshot('Page Tests', `${nombreEscenario}/publishPage 1`);
+            ScreenshotPage.takeScreenshot(nombreEscenario, 'publishPage 1');
             cy.get('div.gh-publish-setting-trigger').contains('Right now').should('be.visible');
-            ScreenshotPage.takeScreenshot('Page Tests', `${nombreEscenario}/publishPageRightNow 2`);
+            ScreenshotPage.takeScreenshot(nombreEscenario, 'publishPageRightNow 2');
             cy.get('div.gh-publish-cta').contains('Continue, final review →').click();
-            ScreenshotPage.takeScreenshot('Page Tests', `${nombreEscenario}/publishPageFinalReview 3`);
+            ScreenshotPage.takeScreenshot(nombreEscenario, 'publishPageFinalReview 3');
             cy.get('div.gh-publish-title').contains('Ready, set, publish.').should('be.visible');
             cy.get('div.gh-publish-title').contains('Share it with the world.').should('be.visible');
             cy.get('button[class="gh-btn gh-btn-large gh-btn-pulse ember-view"]').contains('Publish page, right now').click();
-            ScreenshotPage.takeScreenshot('Page Tests', `${nombreEscenario}/publishPageFinal 4`);
+            ScreenshotPage.takeScreenshot(nombreEscenario, 'publishPageFinal 4');
             cy.contains(tituloPage).should('be.visible'); // Verificar que el page publicado esté visible
             cy.log(`La página "${tituloPage}" ha sido publicada correctamente.`);
             cy.wait(2000);
@@ -47,42 +47,60 @@ class PageCreatePublish {
         }
         else if(Constantes.VERSION_GHOST==4){
             cy.get('div.ember-view.ember-basic-dropdown-trigger.gh-btn.gh-btn-editor.gh-publishmenu-trigger').click();
+            ScreenshotPage.takeScreenshot(nombreEscenario, 'publishPage 1');
+            ScreenshotPage.takeScreenshot(nombreEscenario, 'publishPageRightNow 2');
             cy.get('button.gh-btn.gh-btn-black.gh-publishmenu-button.gh-btn-icon.ember-view').click();
-            cy.get('button.gh-btn.gh-btn-black.gh-btn-icon.ember-view').click();            
+            ScreenshotPage.takeScreenshot(nombreEscenario, 'publishPageFinalReview 3');
+            cy.get('button.gh-btn.gh-btn-black.gh-btn-icon.ember-view').click();
+            ScreenshotPage.takeScreenshot(nombreEscenario, 'publishPageFinal 4');            
         }
     }
 
     verifyPagePublished(tituloPage, nombreEscenario) {
         this.visitPages("?type=published");
         //cy.visit("https://ghost-aaej.onrender.com/ghost/#/pages?type=published"); // Visitar pages publicadas
-        ScreenshotPage.takeScreenshot('Page Tests', `${nombreEscenario}/checkPagePublication`);
+        ScreenshotPage.takeScreenshot(nombreEscenario, 'checkPagePublication');
         cy.get('h3.gh-content-entry-title').contains(tituloPage).should('be.visible');
         cy.log(`La página "${tituloPage}" ha sido verificado en la sección de publicados.`);
     }
 
     schedulePage(tituloPage, nombreEscenario) {
-        cy.get('button.gh-btn-editor.darkgrey.gh-publish-trigger').contains('Publish').click();
-        ScreenshotPage.takeScreenshot('Page Tests', `${nombreEscenario}/schedulePublishPage 1`);
-        cy.get('div.gh-publish-setting-trigger').contains('Right now').click();
-        ScreenshotPage.takeScreenshot('Page Tests', `${nombreEscenario}/schedulePublishPage 2`);
-        cy.contains('Schedule for later').click();
-        ScreenshotPage.takeScreenshot('Page Tests', `${nombreEscenario}/schedulePublishPage 3`);
-        cy.get('.gh-date-time-picker-date input').clear().type('2999-12-31'); // Escribir la fecha en el campo
-        cy.get('div.gh-publish-cta').contains('Continue, final review →').click();
-        ScreenshotPage.takeScreenshot('Page Tests', `${nombreEscenario}/schedulePublishPage 4`);
-        cy.get('div.gh-publish-title').contains('Ready, set, publish.').should('be.visible');
-        cy.get('div.gh-publish-title').contains('Share it with the world.').should('be.visible');
-        cy.get('button[class="gh-btn gh-btn-large gh-btn-pulse ember-view"]').click();
-        ScreenshotPage.takeScreenshot('Page Tests', `${nombreEscenario}/schedulePublishPage 5`);
-        cy.contains(tituloPage).should('be.visible'); // Verificar que el page publicado esté visible
-        cy.log(`La página "${tituloPage}" ha sido programada correctamente.`);
-        cy.wait(2000);
+        if(Constantes.VERSION_GHOST==5){
+            cy.get('button.gh-btn-editor.darkgrey.gh-publish-trigger').contains('Publish').click();
+            ScreenshotPage.takeScreenshot(nombreEscenario, 'schedulePublishPage 1');
+            cy.get('div.gh-publish-setting-trigger').contains('Right now').click();
+            ScreenshotPage.takeScreenshot(nombreEscenario, 'schedulePublishPage 2');
+            cy.contains('Schedule for later').click();
+            ScreenshotPage.takeScreenshot(nombreEscenario, 'schedulePublishPage 3');
+            cy.get('.gh-date-time-picker-date input').clear().type('2999-12-31'); // Escribir la fecha en el campo
+            cy.get('div.gh-publish-cta').contains('Continue, final review →').click();
+            ScreenshotPage.takeScreenshot(nombreEscenario, 'schedulePublishPage 4');
+            cy.get('div.gh-publish-title').contains('Ready, set, publish.').should('be.visible');
+            cy.get('div.gh-publish-title').contains('Share it with the world.').should('be.visible');
+            cy.get('button[class="gh-btn gh-btn-large gh-btn-pulse ember-view"]').click();
+            ScreenshotPage.takeScreenshot(nombreEscenario, 'schedulePublishPage 5');
+            cy.contains(tituloPage).should('be.visible'); // Verificar que el page publicado esté visible
+            cy.log(`La página "${tituloPage}" ha sido programada correctamente.`);
+            cy.wait(2000);
+        }
+        else if(Constantes.VERSION_GHOST==4){
+            cy.get('div.ember-view.ember-basic-dropdown-trigger.gh-btn.gh-btn-editor.gh-publishmenu-trigger').click();
+            ScreenshotPage.takeScreenshot(nombreEscenario, 'schedulePublishPage 1');
+            cy.contains('Schedule it for later').click();
+            ScreenshotPage.takeScreenshot(nombreEscenario, 'schedulePublishPage 2');
+            cy.get('.gh-date-time-picker-date input').clear().type('2999-12-31');
+            ScreenshotPage.takeScreenshot(nombreEscenario, 'schedulePublishPage 3');
+            cy.get('button.gh-btn.gh-btn-black.gh-publishmenu-button.gh-btn-icon.ember-view').click();
+            ScreenshotPage.takeScreenshot(nombreEscenario, 'schedulePublishPage 4');
+            cy.get('button.gh-btn.gh-btn-black.gh-btn-icon.ember-view').click();
+            ScreenshotPage.takeScreenshot(nombreEscenario, 'schedulePublishPage 5');    
+        }
     }
 
     verifyPageScheduled(tituloPage, nombreEscenario) {
         this.visitPages("?type=scheduled");
         //cy.visit("https://ghost-aaej.onrender.com/ghost/#/pages?type=scheduled"); // Visitar pages programadas
-        ScreenshotPage.takeScreenshot('Page Tests', `${nombreEscenario}/checkSchedulePublishPage`);
+        ScreenshotPage.takeScreenshot(nombreEscenario, 'checkSchedulePublishPage');
         cy.get('h3.gh-content-entry-title').contains(tituloPage);
         cy.log(`La página "${tituloPage}" ha sido verificado en la sección de programados.`);
     }
@@ -91,23 +109,23 @@ class PageCreatePublish {
         this.visitPages("?type=published");
         //cy.visit("https://ghost-aaej.onrender.com/ghost/#/pages?type=published"); // Visitar las pages publicados
         cy.get('h3.gh-content-entry-title').contains(tituloPage).click(); // Hacer clic en la page a editar
-        ScreenshotPage.takeScreenshot('Page Tests', `${nombreEscenario}/editPage`);
+        ScreenshotPage.takeScreenshot(nombreEscenario, 'editPage');
     }
 
     editPageDetails(nuevoTituloPage, nombreEscenario){
         cy.get('textarea[placeholder="Page title"]').clear(); // Limpiar el título de la page
         cy.get('textarea[placeholder="Page title"]').type(nuevoTituloPage); // Ingresar un nuevo título de la page
-        ScreenshotPage.takeScreenshot('Page Tests', `${nombreEscenario}/editPageNewTitle`);
+        ScreenshotPage.takeScreenshot(nombreEscenario, 'editPageNewTitle');
         const nuevoContenidoPage = faker.lorem.paragraph(3); // Generar un nuevo contenido de la page
         cy.get('div[data-placeholder="Begin writing your page..."]').clear(); // Limpiar el contenido de la page
         cy.get('div[data-placeholder="Begin writing your page..."]').type(nuevoContenidoPage); // Ingresar un nuevo contenido de la page
-        ScreenshotPage.takeScreenshot('Page Tests', `${nombreEscenario}/editPageNewDescription`);
+        ScreenshotPage.takeScreenshot(nombreEscenario, 'editPageNewDescription');
     }
 
     updatePage(tituloPage, nombreEscenario) {
         cy.contains('Update').click();
         cy.log(`La página "${tituloPage}" ha sido actualizado correctamente.`);
-        ScreenshotPage.takeScreenshot('Page Tests', `${nombreEscenario}/editPageUpdate`);
+        ScreenshotPage.takeScreenshot(nombreEscenario, 'editPageUpdate');
         cy.wait(2000);
     }
     verifyPageUserName(userName){

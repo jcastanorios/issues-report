@@ -5,5 +5,5 @@ export class Constantes {
   static LBL_TOTAL_MIEMBROS="total miembros al inicio";
   
   //4 ó 5
-  static VERSION_GHOST =4;
+  static VERSION_GHOST =5;
 }

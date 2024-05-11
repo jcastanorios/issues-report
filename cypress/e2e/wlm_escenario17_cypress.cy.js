@@ -2,17 +2,16 @@ import LoginGhost from "../support/login"; // Importar módulo de inicio de sesi
 import { faker } from '@faker-js/faker'; // Importar faker para generar datos falsos
 import PageCreatePublish from "../support/pageCreatePublish";
 import userObjectModel from "../support/userObjectModel";
+import { Constantes } from "../support/constantes";
 
 describe('Escenario #17 - Crear un page, Modificar staff y validar los cambios en page', () => {
     let userName;
-    const USER_GHOST = "wilderlopezm@gmail.com"; 
-    const PASS_GHOST = "12345678901"; 
 
     beforeEach(()=>{
          //Iniciar sesión en ghost antes de comenzar la prueba
          LoginGhost.visit(); 
-         LoginGhost.diligenciarEmail(USER_GHOST); 
-         LoginGhost.diligenciarPassword(PASS_GHOST); 
+         LoginGhost.diligenciarEmail(Constantes.USER_GHOST); 
+         LoginGhost.diligenciarPassword(Constantes.PASS_GHOST); 
          LoginGhost.clickBotonSignIn(); 
      })
     it('Crear un nuevo page, modificar el nombre del usuario y verificar', () => {

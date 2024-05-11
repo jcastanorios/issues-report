@@ -3,17 +3,17 @@ import postCreatePublish from "../support/postCreatePublish";
 import PostCreatePublish from "../support/postCreatePublish"; // Importar el Page Object creado
 import userObjectModel from "../support/userObjectModel";
 import { faker } from '@faker-js/faker'; // Importar faker para generar datos falsos
+import { Constantes } from "../support/constantes";
 
 describe('Escenario #16 - Crear un post, Modificar staff y validar los cambios en Post', () => {
     let userName;
-    const USER_GHOST = "wilderlopezm@gmail.com"; 
-    const PASS_GHOST = "12345678901"; 
-
+    //const USER_GHOST = "wilderlopezm@gmail.com"; 
+    //const PASS_GHOST = "12345678901"; 
     beforeEach(()=>{
          //Iniciar sesión en ghost antes de comenzar la prueba
          LoginGhost.visit(); 
-         LoginGhost.diligenciarEmail(USER_GHOST); 
-         LoginGhost.diligenciarPassword(PASS_GHOST); 
+         LoginGhost.diligenciarEmail(Constantes.USER_GHOST); 
+         LoginGhost.diligenciarPassword(Constantes.PASS_GHOST); 
          LoginGhost.clickBotonSignIn(); 
      })
     it('Crear un nuevo post, Modificar el nombre del usuario y verificar el cambio', () => {

@@ -13,7 +13,7 @@ describe('Testing Ghost', () => {
         cy.wait(3000)
         cy.get('input[name=identification]').type('wilderlopezm@gmail.com')
         cy.get('input[name=password]').type('12345678901')
-        ScreenshotPage.takeScreenshot('dannapruebas', `Login/Login`)
+        ScreenshotPage.takeScreenshot('Login', `Login/Login`)
         cy.get('button[type=submit]').click()
                 
     })
@@ -173,25 +173,18 @@ describe('Testing Ghost', () => {
         const textareaPost = faker.lorem.paragraph(3);
         cy.get('div.koenig-editor__editor.__mobiledoc-editor.__has-no-content').type(textareaPost)  //agregar parrafo a post
         if(Constantes.VERSION_GHOST==5){
-            cy.get('button.gh-btn.gh-btn-editor.darkgrey.gh-publish-trigger')
-                .click()  //botón publish
-                cy.wait(1000)
-                ScreenshotPage.takeScreenshot('Posts Test', `${nombreEscenario}/PublishButton`)
-            cy.get('button.gh-btn.gh-btn-black.gh-btn-large')
-                .click() //botón "continue"
-                cy.wait(1000)
-                ScreenshotPage.takeScreenshot('Posts Test', `${nombreEscenario}/ContinuePublishButton`)
-            cy.get('button.gh-btn.gh-btn-large.gh-btn-pulse.ember-view')
-                .click()  //click en publicar de una vez
-                cy.wait(1000)
-                ScreenshotPage.takeScreenshot('Posts Test', `${nombreEscenario}/PublishRightNowButton`)
-            cy.get('div.gh-publish-title')
-                .contains('Boom. It’s out there.')
-             // validar que exite mensaje de publicación
-             cy.wait(1000)
-             ScreenshotPage.takeScreenshot('Posts Test', `${nombreEscenario}/PublishConfirmation`)
-            cy.get('button.gh-back-to-editor')
-                .click()  //back to editor
+            cy.get('button.gh-btn.gh-btn-editor.darkgrey.gh-publish-trigger').click()  //botón publish
+            cy.wait(1000)
+            ScreenshotPage.takeScreenshot('Posts Test', `${nombreEscenario}/PublishButton`)
+            cy.get('button.gh-btn.gh-btn-black.gh-btn-large').click() //botón "continue"
+            cy.wait(1000)
+            ScreenshotPage.takeScreenshot('Posts Test', `${nombreEscenario}/ContinuePublishButton`)
+            cy.get('button.gh-btn.gh-btn-large.gh-btn-pulse.ember-view').click()  //click en publicar de una vez
+            cy.wait(2000)
+            cy.get('div.gh-publish-title').contains('Boom. It’s out there.').should('be.visible'); // validar que existe mensaje de publicación
+            //ScreenshotPage.takeScreenshot('Posts Test', `${nombreEscenario}/PublishRightNowButton`)
+            cy.wait(2000)
+            cy.get('button.gh-btn-editor.gh-publish-back-button').click()  //back to editor
         }
         else if(Constantes.VERSION_GHOST==4){
             cy.get('div.ember-view.ember-basic-dropdown-trigger.gh-btn.gh-btn-editor.gh-publishmenu-trigger').click();//botón publish
@@ -259,7 +252,7 @@ describe('Testing Ghost', () => {
         cy.wait(2000)
         cy.get('a[href="#/pages/"]').click()  // click en Pages
         cy.wait(3000)
-        cy.contains('h3.gh-content-entry-title',tituloPage).should('exist').click();
+        cy.contains('h3.gh-content-entry-title',tituloPage).click();
         if(Constantes.VERSION_GHOST==5){ 
             cy.get('button.gh-btn.gh-btn-editor.darkgrey.gh-publish-trigger').click()  //publicar la pagina
             cy.wait(1000)

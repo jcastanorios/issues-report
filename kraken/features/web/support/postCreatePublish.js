@@ -150,27 +150,31 @@ class PostCreatePublish {
     }
 
     //@Autor: Danna
-    async postSettings() {
+    async postSettings(nombreEscenario) {
         await this.driver.$('button.settings-menu-toggle.gh-btn.gh-btn-editor.gh-btn-icon.icon-only.gh-btn-action-icon').click();
         await this.wait(1000);
+        await this.takeScreenshotTest.takeScreenshotPage(`${nombreEscenario}`, 'postSettings');
     }
 
-    async enterTagValue(tagValue) {
+    async enterTagValue(tagValue, nombreEscenario) {
         await this.driver.$('div#tag-input').click();  //click tag box
         await this.wait(1000);
+        await this.takeScreenshotTest.takeScreenshotPage(`${nombreEscenario}`, 'tagValue1');
         let element = await this.driver.$('form > div:nth-child(3) > div > div:nth-child(1)'); //enter tag value
         await element.setValue(tagValue)
         await this.wait(1000);
         await this.driver.$('ul.ember-power-select-options:first-child').click(); // select tag value
         await this.wait(1000);
+        await this.takeScreenshotTest.takeScreenshotPage(`${nombreEscenario}`, 'tagValue2');
     }
 
-    async allTagFilter(){
+    async allTagFilter(nombreEscenario){
         await this.driver.$('section.view-actions > div > div:nth-child(4) > div:nth-child(1)').click()
         await this.wait(2000);
+        await this.takeScreenshotTest.takeScreenshotPage(`${nombreEscenario}`, 'AllTagFilter');
     }
     
-    async selectAllTagFilter(tagValue){
+    async selectAllTagFilter(tagValue, nombreEscenario){
         let dropdownList = await this.driver.$('body > div:nth-child(1) > div > ul.ember-power-select-options');
     
         // Obtener todos los elementos de la lista desplegable
@@ -181,6 +185,7 @@ class PostCreatePublish {
             let text = await option.getText();
             if (text.includes(tagValue)) {
                 await option.click();
+                await this.takeScreenshotTest.takeScreenshotPage(`${nombreEscenario}`, 'SelectAllTagFilter');
                 break; // Salir del bucle una vez que se hace clic en el elemento deseado
             }
         }
@@ -197,10 +202,12 @@ class PostCreatePublish {
     }   
     }
 
-    async unpublishPost(){
+    async unpublishPost(nombreEscenario){
         await this.driver.$('button.gh-btn.gh-btn-editor.darkgrey.gh-unpublish-trigger').click()
+        await this.takeScreenshotTest.takeScreenshotPage(`${nombreEscenario}`, 'Unpublish1');
         await this.wait(1000);
         await this.driver.$('button.gh-revert-to-draft').click()
+        await this.takeScreenshotTest.takeScreenshotPage(`${nombreEscenario}`, 'Unpublish2');
         await this.wait(1000);
     }
 }

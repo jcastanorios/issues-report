@@ -1,19 +1,24 @@
 const { faker } = require('@faker-js/faker');
 const assert = require('assert');
+const TakeScreenshotTest = require('../support/screenshot.js'); // Importar la clase por defecto
+
 
 class TagsCreate {
     constructor(driver) {
         this.driver = driver;
+        this.takeScreenshotTest = new TakeScreenshotTest(this.driver);
     }
 
     async visit() {
         await this.driver.url("https://ghost-aaej.onrender.com/ghost/#/tags");
         await this.wait(2000);
+        await this.takeScreenshotTest.takeScreenshotPage('Screen Tags', 'Tags');
     }
 
     async clickNewTag() {
         await this.driver.$('//span[contains(text(), "New tag")]').click();
         await this.wait(2000);
+        await this.takeScreenshotTest.takeScreenshotPage('Screen Tags', 'NewTags');
     }
     
     async enterTagDetails(tituloTag) {
@@ -23,11 +28,13 @@ class TagsCreate {
         let element2 = await this.driver.$('textarea#tag-description.gh-input.gh-tag-details-textarea');
         await element2.setValue(contenidoPost);
         await this.wait(5000);
+        await this.takeScreenshotTest.takeScreenshotPage('Screen Tags', 'DetailsTags');
     }
 
     async clickSaveTag() {
         await this.driver.$('//span[contains(text(), "Save")]').click();
         await this.wait(3000);
+        await this.takeScreenshotTest.takeScreenshotPage('Screen Tags', 'SaveTags');
     }
 
     async clearDetailsTag() {
@@ -37,11 +44,13 @@ class TagsCreate {
         let element2 = await this.driver.$('textarea#tag-description.gh-input.gh-tag-details-textarea');
         await element2.setValue(' ');
         await this.wait(2000);
+        await this.takeScreenshotTest.takeScreenshotPage('Screen Tags', 'ClearDetailsTags');
     }
 
     async editTag(tituloTag, nuevoTituloTag) {
         await this.driver.url("https://ghost-aaej.onrender.com/ghost/#/posts?type=published");
         await this.wait(3000);
+        await this.takeScreenshotTest.takeScreenshotPage('Screen Tags', 'EditTags');
 
         let enlaceTag = await this.driver.$(`//a[contains(., '${tituloTag}')]`);
         let nuevoContenidoTag = faker.lorem.paragraph(3); // Generar un nuevo contenido de post
@@ -67,8 +76,10 @@ class TagsCreate {
     async clickDeleteTag() {
         await this.driver.$('//span[contains(text(), "Delete tag")]').click();
         await this.wait(2000);
+        await this.takeScreenshotTest.takeScreenshotPage('Screen Tags', 'Delete1Tags');
         await this.driver.$('button.gh-btn.gh-btn-red.gh-btn-icon.ember-view').click();
         await this.wait(2000);
+        await this.takeScreenshotTest.takeScreenshotPage('Screen Tags', 'Delete2Tags');
 
     }
 

@@ -1,0 +1,22 @@
+{
+    "base":"compare-images",
+    "folders":["/imgs-ghost-version-5", "/imgs-ghost-version-4","/resultado"],
+    "extension":"png",
+    "options":{
+        "output": {
+            "errorColor": {
+                "red": 255,
+                "green": 0,
+                "blue": 255
+            },
+            "errorType": "movement",
+            "largeImageThreshold": 1200,
+            "useCrossOrigin": false,
+            "outputDiff": true
+        },
+        "scaleToSameSize": true,
+        "ignore": "antialiasing"
+    },
+    "viewportHeight":600, 
+    "viewportWidth":800
+}

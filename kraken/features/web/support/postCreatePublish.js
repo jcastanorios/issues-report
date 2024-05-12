@@ -124,22 +124,27 @@ class PostCreatePublish {
     async wait(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
     } 
-    async verifyChangeUserNamePost(expectedText)
+    async verifyChangeUserNamePost(expectedText, nombreEscenario)
     //@Autor: Wilder
     {
         const assert = require('assert');
         let bodyText = await this.driver.$('span.midgrey-l2').getText();
         assert(bodyText.includes(expectedText), `Expected text "${expectedText}" not found in page`);        
+        await this.takeScreenshotTest.takeScreenshotPage(`${nombreEscenario}`, 'veriChangeUserNamePost');
     }
-    async publishDraft(){
+    async publishDraft(nombreEscenario){
         //@Autor: Wilder
         await this.wait(2000);
         await this.driver.$('a.ember-view.gh-btn-editor.gh-editor-back-button').click(); //Clicn boton cerrar
+        await this.takeScreenshotTest.takeScreenshotPage(`${nombreEscenario}`, 'publishDraft 1');
         await this.driver.$('a[href="#/posts/?type=draft"]').click(); //click en lista drawft
+        await this.takeScreenshotTest.takeScreenshotPage(`${nombreEscenario}`, 'PublishDraf 2');
+
     }
-    async verifyPostDraft(tituloPost){
+    async verifyPostDraft(tituloPost, nombreEscenario){
         //@Autor: wilder
         await this.driver.url("https://ghost-aaej.onrender.com/ghost/#/posts?type=draft");
+        await this.takeScreenshotTest.takeScreenshotPage(`${nombreEscenario}`, 'verifyPostDraft 1');
         const tituloPublicado = await this.driver.$(`//h3[contains(text(),'${tituloPost}')]`);
         if (tituloPublicado) {
             console.log(`--La página "${tituloPost}" ha sido verificada en la sección de publicados.--`);
@@ -147,6 +152,7 @@ class PostCreatePublish {
             console.log(`--La página "${tituloPost}" NO ha sido verificada en la sección de publicados.--`);
         }
         console.log(`***** La página "${tituloPost}" ha sido verificada en la sección de publicados. *****`);
+        await this.takeScreenshotTest.takeScreenshotPage(`${nombreEscenario}`, 'verifyPostDraft 2');
     }
 
     //@Autor: Danna
@@ -155,6 +161,14 @@ class PostCreatePublish {
         await this.wait(1000);
         await this.takeScreenshotTest.takeScreenshotPage(`${nombreEscenario}`, 'postSettings');
     }
+
+    async pageSettings(nombreEscenario) {
+        //@Autor: Wilder
+        await this.driver.$('button.settings-menu-toggle.gh-btn.gh-btn-editor.gh-btn-icon.icon-only.gh-btn-action-icon').click();
+        await this.wait(1000);
+        await this.takeScreenshotTest.takeScreenshotPage(`${nombreEscenario}`, 'pageSettings');
+    }
+
 
     async enterTagValue(tagValue, nombreEscenario) {
         await this.driver.$('div#tag-input').click();  //click tag box

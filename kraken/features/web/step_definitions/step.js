@@ -3,8 +3,9 @@ const { faker } = require('@faker-js/faker');
 const LoginGhost = require('../support/login.js'); // Importar la clase por defecto
 const PageCreatePublish = require('../support/pageCreatePublish.js'); // Importar la clase por defecto
 const PostCreatePublish = require('../support/postCreatePublish.js'); // Importar la clase por defecto
-const TagCreate = require('../support/tagCreate.js'); // Importar la clase por defecto
+//const TagCreate = require('../support/tagCreate.js'); // Importar la clase por defecto
 const TakeScreenshotTest = require('../support/screenshot.js'); // Importar la clase por defecto
+const TagCreate = require('../support/dctagCreate.js'); // Importar la clase por defecto
 
 let loginGhost;
 let pageCreatePublish;
@@ -107,36 +108,50 @@ When('I unpublish a post and validate as draft', async () => {
 
 When('I create, draft, and verify a post', async () => {
     //Autor:Wilder
+    nombreEscenario = "ESC18_CreatePostDraft";
     let postTitle = faker.commerce.productName();
-    await createPublishPost();
-    await selectImageForPost(postTitle);
-    await enterPostDetails(postTitle);
-    await publishDraft();
-    await checkPostDraft(postTitle);
+    await createPublishPost(nombreEscenario);
+    await selectImageForPost(postTitle, nombreEscenario);
+    await enterPostDetails(postTitle, nombreEscenario);
+    await publishDraft(nombreEscenario);
+    await checkPostDraft(postTitle), nombreEscenario;
 });
 //Page
 When('I create, draft, and verify a page', async () => {
     //Autor:Wilder
+    nombreEscenario = "ESC19_CreatePageDraft";
     let postTitle = faker.commerce.productName();
-    await createPublishPage();
-    await selectImageForPage(postTitle);
-    await enterPageDetails(postTitle);
-    await publishPageDraft();
-    await checkPageDraft(postTitle);
+    await createPublishPage(nombreEscenario);
+    await selectImageForPage(postTitle, nombreEscenario);
+    await enterPageDetails(postTitle), nombreEscenario;
+    await publishPageDraft(nombreEscenario);
+    await checkPageDraft(postTitle, nombreEscenario);
 });
 
-When('I create tag, page, asign tag to page, publish, and verify', async () => {
-    //Autor: wilder
-    console.log("Ingresando a escenario 20");
-    let tagTitulo = NewTag(); //Crear el tag ->Click en new tag
-    console.log("Se lleamo al nuevo tag");
-    EnterNewTag(tagTitulo);//Creación del tag, con los datos titulo, color y descripción
-    let pageTitulo = createPublishPage() //Crea el post -> click en post y new post
-    enterPageDetails(pageTitulo); //Ingresa el titulo del post
-    asignarTagPage(tagTitulo)//Asignación del tag al post
-    publishPage(pageTitulo)//Publicar page
-    checkPagePublished(pageTitulo); //Verificar si el post con tag estén publicados
+
+When('I create, assign tag and publish a page', async function (){
+    //@Autor: wilder
+    nombreEscenario = "Crear tag y publicar post"
+    //tagCreate = new TagsCreate(this.driver);
+    let tagName = faker.commerce.isbn();
+    let pageTitle = faker.commerce.productName();
+    //postCreatePublish = new PostCreatePublish(this.driver);
+    await tagCreate.visit();
+    await tagCreate.clickNewTag();
+    await tagCreate.enterTagDetails(tagName);
+    await tagCreate.clickSaveTag();
+
+    await pageCreatePublish.visit(nombreEscenario);
+
+    await pageCreatePublish.clickNewPage(nombreEscenario);
+    await pageCreatePublish.enterPageDetails(pageTitle, nombreEscenario);
+    await pageCreatePublish.pageSettings(nombreEscenario);
+    await pageCreatePublish.enterTagValue(tagName, nombreEscenario);
+    await pageCreatePublish.pageSettings(nombreEscenario);
+    await pageCreatePublish.publishPage(nombreEscenario);
+    await pageCreatePublish.visit(nombreEscenario);
 });
+
 
 //PAGE
 async function checkPagePublished(pageTitle, nombreEscenario) {
@@ -161,13 +176,13 @@ async function schedulePage(pageTitle, nombreEscenario) {
 async function checkPageScheduled(pageTitle, nombreEscenario) {
     await pageCreatePublish.verifyPageScheduled(pageTitle, nombreEscenario);
 }
-async function publishPageDraft() {
+async function publishPageDraft(nombreEscenario) {
     //@autor:Wilder
-    await pageCreatePublish.publishPageDraft();
+    await pageCreatePublish.publishPageDraft(nombreEscenario);
 }
-async function checkPageDraft(postTitle) {
+async function checkPageDraft(postTitle, nombreEscenario) {
     //@autor:Wilder
-    await pageCreatePublish.verifyPageDraft(postTitle);
+    await pageCreatePublish.verifyPageDraft(postTitle, nombreEscenario);
 }
 //POST
 async function createPublishPost(postTitle, nombreEscenario) {
@@ -189,30 +204,30 @@ async function checkPostPublished(postTitle, nombreEscenario) {
 async function clearDetailsPost(nombreEscenario){
    await postCreatePublish.clearDetailsPost(nombreEscenario); // Limpiar el título del post
 }
-async function publishDraft() {
+async function publishDraft(nombreEscenario) {
     //@autor:Wilder
-    await postCreatePublish.publishDraft();
+    await postCreatePublish.publishDraft(nombreEscenario);
 }
-async function checkPostDraft(postTitle) {
+async function checkPostDraft(postTitle, nombreEscenario) {
     //@autor:Wilder
-    await postCreatePublish.verifyPostDraft(postTitle);
+    await postCreatePublish.verifyPostDraft(postTitle, nombreEscenario);
 }
 
 //TAG
-async function NewTag(){
+async function NewTag(nombreEscenario){
     //@Autor: Wilder
     tagCreate.visit();
-    tagCreate.clickNewTag();
+    tagCreate.clickNewTag(nombreEscenario);
     const tituloTag = faker.commerce.isbn();
     return tituloTag;
 }
 
-async function EnterNewTag(tituloTag){
+async function EnterNewTag(tituloTag, nombreEscenario){
     //@Autor: Wilder    
-    tagCreate.CreateNewTag(tituloTag);
+    tagCreate.CreateNewTag(tituloTag, nombreEscenario);
 }
 
-async function asignarTagPage(tagTitulo){
+async function asignarTagPage(tagTitulo, nombreEscenario){
     //@Autor: Wilder    
-    pageCreatePublish.asignarTagPage(tagTitulo);
+    pageCreatePublish.asignarTagPage(tagTitulo, nombreEscenario);
 }

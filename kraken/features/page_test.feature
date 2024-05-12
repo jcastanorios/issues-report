@@ -1,5 +1,4 @@
 Feature: Test Pages Crete, Publish
-
 @user2 @web
 Scenario: Creación nuevo miembro del blog
   Given I am logged into the Ghost application for create a member
@@ -16,7 +15,6 @@ Scenario: Eliminación nuevo miembro del blog
   And I wait for 5 seconds
   Then I validate member elimination
 
-
 @user6 @web
 Scenario: Creación página en draft para un blog
   Given I am logged into the Ghost application for create page on draft
@@ -24,4 +22,3 @@ Scenario: Creación página en draft para un blog
   When I create a page on draft
   And I wait for 9 seconds
   Then I validate page create on draft
-

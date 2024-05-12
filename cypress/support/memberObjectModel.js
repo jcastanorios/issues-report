@@ -1,3 +1,5 @@
+import { Constantes } from "../support/constantes";
+import ScreenshotPage from "../support/screenshot";
 class MemberObjectModel {
   obtenerElementoListaMiembros() {
     return cy.get(".gh-list").find("a:first-child");
@@ -8,6 +10,10 @@ class MemberObjectModel {
       .find("li a")
       .contains("Members")
       .click();
+    ScreenshotPage.takeScreenshot(
+      Constantes.FOLDER_ESC_DELETE_MEMBER,
+      "validar-clic-btn-miembros"
+    );
   }
 
   validarAccesoPaginaMiembros() {
@@ -39,16 +45,28 @@ class MemberObjectModel {
       .find("a.ember-view.gh-btn.gh-btn-primary")
       .contains("span", "New member")
       .click();
+    ScreenshotPage.takeScreenshot(
+      Constantes.FOLDER_ESC_DELETE_MEMBER,
+      "validar-clic-btn-nuevo-miembro"
+    );
   }
 
   adicionarNombreMiembro(nombre) {
     cy.get('input[id="member-name"]').blur().type(nombre);
+    ScreenshotPage.takeScreenshot(
+      Constantes.FOLDER_ESC_DELETE_MEMBER,
+      "adicionar-nuevo-miembro"
+    );
   }
 
   adicionarEmailMiembro(email) {
     cy.get("div.form-group.max-width.error.ember-view")
       .find("input.ember-text-field.gh-input.ember-view")
       .type(email);
+    ScreenshotPage.takeScreenshot(
+      Constantes.FOLDER_ESC_DELETE_MEMBER,
+      "obtener-btn-retry"
+    );
   }
 
   almacenarMiembroBlog() {
@@ -59,6 +77,10 @@ class MemberObjectModel {
       .find("span")
       .contains("Save")
       .click();
+    ScreenshotPage.takeScreenshot(
+      Constantes.FOLDER_ESC_DELETE_MEMBER,
+      "almacenar-miembro-blog"
+    );
   }
 
   obtenerBotonRetry() {
@@ -78,23 +100,25 @@ class MemberObjectModel {
       .find("span.gh-nav-member-count");
   }
 
-  obtenerPrimerElementoDeListaMiembros(){
+  obtenerPrimerElementoDeListaMiembros() {
     return cy.get(".gh-list").find("a:first");
   }
 
-  obtenerElementoDomPinon(){
+  obtenerElementoDomPinon() {
     return cy.get(
       "button.gh-btn.gh-btn-icon.icon-only.gh-btn-action-icon.closed.ember-view"
-    )
+    );
   }
-  obtenerElementoDomDelete(){
+  obtenerElementoDomDelete() {
     return cy.get("button.mr2").eq(1);
   }
 
-  obtenerElementoDomModal(label){
-    return cy.get(
-      ".fullscreen-modal .modal-footer button.gh-btn.gh-btn-red.ember-view"
-    ).contains(label);
+  obtenerElementoDomModal(label) {
+    return cy
+      .get(
+        ".fullscreen-modal .modal-footer button.gh-btn.gh-btn-red.ember-view"
+      )
+      .contains(label);
   }
 }
 

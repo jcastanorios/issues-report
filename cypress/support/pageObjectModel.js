@@ -1,3 +1,5 @@
+import { Constantes } from "../support/constantes";
+import ScreenshotPage from "../support/screenshot";
 class PageObjectModel {
   validarEnlace() {
     cy.wait(9000);
@@ -7,6 +9,10 @@ class PageObjectModel {
         expect(text.replace(/\n|\s/g, "")).to.eq("Draft-Saved");
         cy.get("a.gh-btn-editor").contains("Pages").click();
       });
+    ScreenshotPage.takeScreenshot(
+      Constantes.FOLDER_ESC_ADD_PAGE_DRAFT,
+      "validar-enlace-page"
+    );
   }
 
   filtrarInformacionPaginas() {
@@ -17,17 +23,27 @@ class PageObjectModel {
       .find("span.ember-power-select-selected-item")
       .eq(4)
       .click();
+    ScreenshotPage.takeScreenshot(
+      Constantes.FOLDER_ESC_ADD_PAGE_DRAFT,
+      "filtrar-info-page"
+    );
   }
 
   filtrarPorReciente() {
     cy.get("li.ember-power-select-option").contains("Recently updated").click();
+    ScreenshotPage.takeScreenshot(
+      Constantes.FOLDER_ESC_ADD_PAGE_DRAFT,
+      "filtrar-por-reciente"
+    );
   }
 
-  vaidarCreacionPagina(){
-    return cy.get("li.gh-list-row.gh-posts-list-item")
-    .find("h3.gh-content-entry-title")
-    .first()
-    .invoke("text").then((text) => text);
+  vaidarCreacionPagina() {
+    return cy
+      .get("li.gh-list-row.gh-posts-list-item")
+      .find("h3.gh-content-entry-title")
+      .first()
+      .invoke("text")
+      .then((text) => text);
   }
 }
 

@@ -23,10 +23,10 @@ Given(
     const properties = JSON.parse(
       fs.readFileSync(path.resolve(__dirname, "../properties.json"), "utf8")
     );
-    loginGhost.visit();
-    await loginGhost.enterEmail(properties.USER_GHOST);
-    await loginGhost.enterPassword(properties.PASS_GHOST);
-    await loginGhost.clickSignIn();
+    loginGhost.visit("ESC11_Adicionar_miembro_a_un_blog");
+    await loginGhost.enterEmail(properties.USER_GHOST, "ESC11_Adicionar_miembro_a_un_blog");
+    await loginGhost.enterPassword(properties.PASS_GHOST, "ESC11_Adicionar_miembro_a_un_blog");
+    await loginGhost.clickSignIn("ESC11_Adicionar_miembro_a_un_blog");
   }
 );
 
@@ -34,18 +34,18 @@ Given(
  * Escenario de pruebas para creación de un miembro para un blog
  */
 When("I create a member", async () => {
-  totalMembers = Number(await memberObjectModel.validateMemberCreation());
-  await memberObjectModel.getMembersPage();
-  await memberObjectModel.clickOnMembers();
-  await memberObjectModel.setNameMember(faker.person.fullName());
-  await memberObjectModel.setEmailMember(faker.internet.email());
-  await memberObjectModel.saveMember();
+  totalMembers = Number(await memberObjectModel.validateMemberCreation("ESC11_Adicionar_miembro_a_un_blog"));
+  await memberObjectModel.getMembersPage("ESC11_Adicionar_miembro_a_un_blog");
+  await memberObjectModel.clickOnMembers("ESC11_Adicionar_miembro_a_un_blog");
+  await memberObjectModel.setNameMember(faker.person.fullName(), "ESC11_Adicionar_miembro_a_un_blog");
+  await memberObjectModel.setEmailMember(faker.internet.email(), "ESC11_Adicionar_miembro_a_un_blog");
+  await memberObjectModel.saveMember("ESC11_Adicionar_miembro_a_un_blog");
 });
 /**
  * Escenario al final comprobación de cantidad de miembros en la lista
  */
 Then("I validate member creation", async () => {
-  if ((await memberObjectModel.validateMemberCreation()) > totalMembers) {
-    console.log("Total miembros después de creación: ", await memberObjectModel.validateMemberCreation());
+  if ((await memberObjectModel.validateMemberCreation("ESC11_Adicionar_miembro_a_un_blog")) > totalMembers) {
+    console.log("Total miembros después de creación: ", await memberObjectModel.validateMemberCreation("ESC11_Adicionar_miembro_a_un_blog"));
   }
 });

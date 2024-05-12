@@ -1,16 +1,23 @@
 import LoginGhost from "../support/login";
 import { faker } from "@faker-js/faker";
 import { Constantes } from "../support/constantes";
+import ScreenshotPage from "../support/screenshot";
 import PageCreatePublish from "../support/pageCreatePublish";
 import PageObjectModel from "../support/pageObjectModel";
 
 describe("Escenario creación de una página para un blog y verificar su actualización en draft", () => {
-  let totalMembers = 0;
   beforeEach(() => {
     LoginGhost.visit();
+    ScreenshotPage.takeScreenshot(Constantes.FOLDER_LOGIN, "login-visit-url");
     LoginGhost.diligenciarEmail(Constantes.USER_GHOST);
+    ScreenshotPage.takeScreenshot(Constantes.FOLDER_LOGIN, "login-input-email");
     LoginGhost.diligenciarPassword(Constantes.PASS_GHOST);
+    ScreenshotPage.takeScreenshot(
+      Constantes.FOLDER_LOGIN,
+      "login-input-password"
+    );
     LoginGhost.clickBotonSignIn();
+    ScreenshotPage.takeScreenshot(Constantes.FOLDER_LOGIN, "login-clic-button");
   });
 
   /**
@@ -28,6 +35,10 @@ describe("Escenario creación de una página para un blog y verificar su actuali
     PageObjectModel.vaidarCreacionPagina().then((text) => {
       expect(text.trim()).to.equal(tiutloPagina);
     });
+    ScreenshotPage.takeScreenshot(
+      Constantes.FOLDER_ESC_ADD_PAGE_DRAFT,
+      "validar-creacion-pagina"
+    );
   });
 });
 
@@ -36,10 +47,16 @@ describe("Escenario creación de una página para un blog y verificar su actuali
  */
 function crearPagina() {
   const tituloPage = faker.commerce.productName();
-  PageCreatePublish.visit();
-  PageCreatePublish.clickNewPage();
-  PageCreatePublish.selectImageForPage(tituloPage);
+  PageCreatePublish.visit(Constantes.FOLDER_ESC_ADD_PAGE_DRAFT);
+  PageCreatePublish.clickNewPage(Constantes.FOLDER_ESC_ADD_PAGE_DRAFT);
+  PageCreatePublish.selectImageForPage(
+    tituloPage,
+    Constantes.FOLDER_ESC_ADD_PAGE_DRAFT
+  );
   cy.wait(9000);
-  PageCreatePublish.enterPageDetails(tituloPage);
+  PageCreatePublish.enterPageDetails(
+    tituloPage,
+    Constantes.FOLDER_ESC_ADD_PAGE_DRAFT
+  );
   return tituloPage;
 }

@@ -1,6 +1,4 @@
-Feature: Validar y verificar el inicio de sesión en la aplicación Ghost
-
-    
+Feature: Validar y verificar el inicio de sesión en la aplicación Ghost    
 @user1 @web
 Scenario: No se diligencian los campos de email y password
   Given I am logged into the Ghost application sign in

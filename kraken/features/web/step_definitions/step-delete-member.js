@@ -23,10 +23,10 @@ Given(
     const properties = JSON.parse(
       fs.readFileSync(path.resolve(__dirname, "../properties.json"), "utf8")
     );
-    loginGhost.visit();
-    await loginGhost.enterEmail(properties.USER_GHOST);
-    await loginGhost.enterPassword(properties.PASS_GHOST);
-    await loginGhost.clickSignIn();
+    loginGhost.visit("ESC12_Eliminar_miembro_de_un_blog");
+    await loginGhost.enterEmail(properties.USER_GHOST,"ESC12_Eliminar_miembro_de_un_blog");
+    await loginGhost.enterPassword(properties.PASS_GHOST,"ESC12_Eliminar_miembro_de_un_blog");
+    await loginGhost.clickSignIn("ESC12_Eliminar_miembro_de_un_blog");
   }
 );
 
@@ -35,36 +35,36 @@ Given(
  */
 When("I delete a member", async () => {
 
-  await memberObjectModel.getMembersPage();
+  await memberObjectModel.getMembersPage("ESC12_Eliminar_miembro_de_un_blog");
   await new Promise((resolve) => setTimeout(resolve, 2000));
-  await memberObjectModel.clickOnMembers();
-  await memberObjectModel.setNameMember(faker.person.fullName());
+  await memberObjectModel.clickOnMembers("ESC12_Eliminar_miembro_de_un_blog");
+  await memberObjectModel.setNameMember(faker.person.fullName(), "ESC12_Eliminar_miembro_de_un_blog");
   let emailFake = faker.internet.email();
-  await memberObjectModel.setEmailMember(emailFake);
-  await memberObjectModel.saveMember();
+  await memberObjectModel.setEmailMember(emailFake, "ESC12_Eliminar_miembro_de_un_blog");
+  await memberObjectModel.saveMember("ESC12_Eliminar_miembro_de_un_blog");
   await new Promise((resolve) => setTimeout(resolve, 2000));
-  await memberObjectModel.getMembersPage();
-  totalMembers = Number(await memberObjectModel.validateMemberCreation());
+  await memberObjectModel.getMembersPage("ESC12_Eliminar_miembro_de_un_blog");
+  totalMembers = Number(await memberObjectModel.validateMemberCreation("ESC12_Eliminar_miembro_de_un_blog"));
 
   //clic en el miembro de la lista
-  let url = await memberObjectModel.getIdFromMemberCreate();
+  let url = await memberObjectModel.getIdFromMemberCreate("ESC12_Eliminar_miembro_de_un_blog");
   //dirigir a la sección de eliminación por el id del miembro creado
-  await memberObjectModel.getMemberPageById(url);
+  await memberObjectModel.getMemberPageById(url, "ESC12_Eliminar_miembro_de_un_blog");
   //dar clic elemento piñon en la sección
-  await memberObjectModel.getActions();
+  await memberObjectModel.getActions("ESC12_Eliminar_miembro_de_un_blog");
   //eliminar el miembro del blog
-  await memberObjectModel.getDeleteMember();
+  await memberObjectModel.getDeleteMember("ESC12_Eliminar_miembro_de_un_blog");
   //confimar eliminación
-  await memberObjectModel.confirmDeleteMember();
+  await memberObjectModel.confirmDeleteMember("ESC12_Eliminar_miembro_de_un_blog");
 });
 /**
  * Escenario al final comprobación de cantidad de miembros en la lista
  */
 Then("I validate member elimination", async () => {
-  if ((await memberObjectModel.validateMemberCreation()) < totalMembers) {
+  if ((await memberObjectModel.validateMemberCreation("ESC12_Eliminar_miembro_de_un_blog")) < totalMembers) {
     console.log(
       "Total miembros después de eliminación:",
-      await memberObjectModel.validateMemberCreation()
+      await memberObjectModel.validateMemberCreation("ESC12_Eliminar_miembro_de_un_blog")
     );
   }
 });

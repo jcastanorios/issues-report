@@ -21,10 +21,10 @@ Given(
     const properties = JSON.parse(
       fs.readFileSync(path.resolve(__dirname, "../properties.json"), "utf8")
     );
-    loginGhost.visit();
-    await loginGhost.enterEmail(properties.USER_GHOST);
-    await loginGhost.enterPassword(properties.PASS_GHOST);
-    await loginGhost.clickSignIn();
+    loginGhost.visit("ESC10_Crear_Draft_de_Pages");
+    await loginGhost.enterEmail(properties.USER_GHOST, "ESC10_Crear_Draft_de_Pages");
+    await loginGhost.enterPassword(properties.PASS_GHOST, "ESC10_Crear_Draft_de_Pages");
+    await loginGhost.clickSignIn("ESC10_Crear_Draft_de_Pages");
   }
 );
 
@@ -33,18 +33,18 @@ Given(
  */
 When("I create a page on draft", async () => {
   titlePage = faker.commerce.productName();
-  await pageOnDraftObjectModel.getUrlPage();
-  await pageOnDraftObjectModel.clickNewPage();
-  await pageOnDraftObjectModel.enterPageDetails(titlePage);
+  await pageOnDraftObjectModel.getUrlPage("ESC10_Crear_Draft_de_Pages");
+  await pageOnDraftObjectModel.clickNewPage("ESC10_Crear_Draft_de_Pages");
+  await pageOnDraftObjectModel.enterPageDetails(titlePage, "ESC10_Crear_Draft_de_Pages");
   await pageOnDraftObjectModel.wait(7000);
-  await pageOnDraftObjectModel.getRecentlyPages();
-  await pageOnDraftObjectModel.getFirstTitlePage();
+  await pageOnDraftObjectModel.getRecentlyPages("ESC10_Crear_Draft_de_Pages");
+  await pageOnDraftObjectModel.getFirstTitlePage("ESC10_Crear_Draft_de_Pages");
 });
 /**
  * Escenario al final comprobación de título corresponda a la página en draft
  */
 Then("I validate page create on draft", async () => {
-  if ((await pageOnDraftObjectModel.getFirstTitlePage()) == titlePage) {
+  if ((await pageOnDraftObjectModel.getFirstTitlePage("ESC10_Crear_Draft_de_Pages")) == titlePage) {
     console.log(
       "se valida que el primer titulo si corresponde a la página en draft",
       titlePage

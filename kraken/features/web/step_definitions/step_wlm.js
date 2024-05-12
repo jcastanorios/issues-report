@@ -29,21 +29,21 @@ Then('I change user name staff and verify page', async function () {
     await verifyChangeUserNamePage(username);//Verificar cambio en lista de page
 });
 
-async function settingUser(){
-    await userObjectModel.settingUser();
+async function settingUser(nombreEscenario){
+    await userObjectModel.settingUser(nombreEscenario);
 }
-async function enterChangeUserName(userName){
-    await userObjectModel.enterChangeUserName(userName);
+async function enterChangeUserName(userName, nombreEscenario){
+    await userObjectModel.enterChangeUserName(userName, nombreEscenario);
 }
-async function verifyChangeUserName(userName){
-    await userObjectModel.verifyChangeUserName(userName);
+async function verifyChangeUserName(userName, nombreEscenario){
+    await userObjectModel.verifyChangeUserName(userName, nombreEscenario);
 }
-async function verifyChangeUserNamePost(userName){
+async function verifyChangeUserNamePost(userName, nombreEscenario){
     await postCreatePublish.visit();
-    await postCreatePublish.verifyChangeUserNamePost(userName);
+    await postCreatePublish.verifyChangeUserNamePost(userName, nombreEscenario);
 }
 
-async function verifyChangeUserNamePage(userName){
+async function verifyChangeUserNamePage(userName, nombreEscenario){
     await pageCreatePublish.visit();
-    await pageCreatePublish.verifyChangeUserNamePage(userName);
+    await pageCreatePublish.verifyChangeUserNamePage(userName, nombreEscenario);
 }

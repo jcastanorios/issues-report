@@ -128,30 +128,37 @@ class PageCreatePublish {
         ScreenshotPage.takeScreenshot(nombreEscenario, 'editPageUpdate');
         cy.wait(2000);
     }
-    verifyPageUserName(userName){
+    verifyPageUserName(userName, nombreEscenario){
         // Obtener el texto de todos los elementos y verificar que al menos uno este modificado
         cy.get('span.midgrey-l2')
         .first()
         .invoke('text')
         .should('eq', userName);        
+        ScreenshotPage.takeScreenshot(nombreEscenario, 'verfyPageUserName');
     }
-    closeNewPage(){
+    closeNewPage(nombreEscenario){
         cy.get('a[href="#/pages/"]').first().click(); //clic post para cerrar
         cy.wait(1000);
+        ScreenshotPage.takeScreenshot(nombreEscenario, 'closeNewPage');
     }
-    verifyPageDrawft(tituloPost) {
+    verifyPageDrawft(tituloPost, nombreEscenario) {
         this.visitPages("");
+        ScreenshotPage.takeScreenshot(nombreEscenario, 'verfyPageDrawf 1');
         //cy.visit("https://ghost-aaej.onrender.com/ghost/#/pages"); // Visitar los posts publicados
         cy.get('section.view-actions > div > div:nth-child(1) > div:nth-child(1)').click({force:true})  //selección de All pages        
         cy.contains('h3.gh-content-entry-title',tituloPost).should('exist');    
+        ScreenshotPage.takeScreenshot(nombreEscenario, 'verfyPageDrawf 2');
     }
-    asignarTagPage(tagTitulo){                
+    asignarTagPage(tagTitulo, nombreEscenario){                
         cy.get('button.settings-menu-toggle.gh-btn.gh-btn-editor.gh-btn-icon.icon-only.gh-btn-action-icon').click() //click en panel lateral de settings
+        ScreenshotPage.takeScreenshot(nombreEscenario, 'asignafrTagPage 1');
         cy.get('form > div:nth-child(3) > div > div:nth-child(1)')
             .click()
             .type(tagTitulo,{delay:200})  //click en el tag y type
         cy.get('ul.ember-power-select-options').first().click()
+        ScreenshotPage.takeScreenshot(nombreEscenario, 'verfyPageDrawf 2');
         cy.get('button.settings-menu-toggle.gh-btn.gh-btn-editor.gh-btn-icon.icon-only.gh-btn-action-icon').click() //clic en panel lateral de settings
+        ScreenshotPage.takeScreenshot(nombreEscenario, 'verfyPageDrawf 3');
     }
 
     visitPages(tipo){

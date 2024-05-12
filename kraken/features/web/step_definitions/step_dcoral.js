@@ -20,43 +20,47 @@ When("I create and save a tag", async function (){
 });
 
 When('I create, assign tag and publish a post', async function (){
-    
-    await postCreatePublish.visit();
-    await postCreatePublish.clickNewPost();
-    await postCreatePublish.enterPostDetails(postTitle);
-    await postCreatePublish.postSettings();
-    await postCreatePublish.enterTagValue(tagName);
-    await postCreatePublish.postSettings();
-    await postCreatePublish.publishPost();
-    await postCreatePublish.visit();
+    nombreEscenario = "Crear tag y publicar post"
+    await postCreatePublish.visit(nombreEscenario);
+    await postCreatePublish.clickNewPost(nombreEscenario);
+    await postCreatePublish.enterPostDetails(postTitle, nombreEscenario);
+    await postCreatePublish.postSettings(nombreEscenario);
+    await postCreatePublish.enterTagValue(tagName, nombreEscenario);
+    await postCreatePublish.postSettings(nombreEscenario);
+    await postCreatePublish.publishPost(nombreEscenario);
+    await postCreatePublish.visit(nombreEscenario);
 });
 
 When('I edit a tag', async function (){
+    nombreEscenario = 'Edit Tag'
     //let tagName = faker.commerce.productName();
     tagCreate = new TagsCreate(this.driver);
     postCreatePublish = new PostCreatePublish(this.driver);
-    await tagCreate.visit();
-    await tagCreate.clickNewTag();
-    await tagCreate.enterTagDetails(tagName);
-    await tagCreate.clickSaveTag();
+    await tagCreate.visit(nombreEscenario);
+    await tagCreate.clickNewTag(nombreEscenario);
+    await tagCreate.enterTagDetails(tagName, nombreEscenario);
+    await tagCreate.clickSaveTag(nombreEscenario);
   
     let nuevoTagName = faker.commerce.productName();
-    await tagCreate.editTag(tagName, nuevoTagName);
-    await tagCreate.clickSaveTag();
+    await tagCreate.editTag(tagName, nuevoTagName, nombreEscenario);
+    await tagCreate.clickSaveTag(nombreEscenario);
 
 });
 
 Then('I validate post with tag assigned', async function (){
-    await postCreatePublish.allTagFilter();
-    await postCreatePublish.selectAllTagFilter(tagName);
-    await postCreatePublish.postTagListed(postTitle);
+    nombreEscenario = 'Post screen asigned'
+    await postCreatePublish.allTagFilter(nombreEscenario);
+    await postCreatePublish.selectAllTagFilter(tagName, nombreEscenario);
+    await postCreatePublish.postTagListed(postTitle, nombreEscenario);
 
 });
 
 Then('I delete a tag', async function(){
-    await tagCreate.clickDeleteTag()
+    nombreEscenario = 'Delete tag'
+    await tagCreate.clickDeleteTag(nombreEscenario)
 });
 
 Then('I validate tag in Tag list', async function (){
-    await tagCreate.validateTagList(tagName);
+    nombreEscenario = 'Validate Tag'
+    await tagCreate.validateTagList(tagName, nombreEscenario);
 });

@@ -20,8 +20,8 @@ describe("Escenario para validar y verificar la creación y la publicación de u
     });
 
     it("Primer caso: Crear, publicar y verificar PAGE en Ghost con titulo largo ...", () => {
-        let tituloPost = faker.lorem.words(300)
-        let contenidoPost = faker.lorem.words(300);
+        let tituloPage = faker.lorem.words(300)
+        let contenidoPage = faker.lorem.words(300);
         
         let nombreEscenario = "ESC4_CreatePage";
         createPublishPage(nombreEscenario); // Llamar a la función para crear y publicar un page

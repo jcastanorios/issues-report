@@ -8,7 +8,7 @@ const LoginGhost = {
         url ="https://ghost-aaej.onrender.com/ghost/#/signin";
       }
       cy.visit(url);
-      cy.wait(7000);
+      cy.wait(5000);
     },
   
     diligenciarEmail(email) {

@@ -11,7 +11,7 @@ describe('Escenario #18 - Crear un post, y verificar que este publicado en borra
          LoginGhost.diligenciarPassword(Constantes.PASS_GHOST); 
          LoginGhost.clickBotonSignIn(); 
      })
-     it('ESC105-Crear un nuevo post con titulo corto, Verificar que este en la lista de borrador- PsedudoAletorio', () => {
+     it('ESC105-Crear un nuevo post con titulo corto, Verificar que este en la lista de borrador- PSeudoAleatorio', () => {
         let lista = []
         let elem = new Object()    
         let url = "https://my.api.mockaroo.com/test_schema.json?key=888364c0";        

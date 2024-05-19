@@ -19,7 +19,7 @@ describe("Escenario para validar y verificar la creación y la publicación de u
         LoginGhost.clickBotonSignIn(); 
     });
 
-    it("Septimo caso: Crear tag con nombre que contiene emoticon en Ghost...", () => {
+    it("Octavo caso: Crear tag con nombre que contiene emoticon en Ghost...", () => {
         let indice = new Number();
         let indice1 = new Number();
         let indice2 = new Number();
@@ -41,7 +41,7 @@ describe("Escenario para validar y verificar la creación y la publicación de u
         descript = JSON.stringify(dataPrueba2[indice2].title).replace(/"/g, '');
         
         newTag(); // Llamar a la función para crear y publicar un tag
-        createTag(tituloTag, slug, descript); // Llamar a la función para seleccionar una imagen para el page
+        createTag(tituloTag, slug, descript); // datos new tag
         saveTag(); // guardar new tag
         cy.wait(2000); // Esperar 2 segundos
     });

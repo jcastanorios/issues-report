@@ -22,7 +22,7 @@ describe("Escenario para validar y verificar la creación y la publicación de u
         let descript = faker.lorem.words();
         
         newTag(); // Llamar a la función para crear y publicar un tag
-        createTag(tituloTag, slug, descript); // Llamar a la función para seleccionar una imagen para el page
+        createTag(tituloTag, slug, descript); // datos del new tag
         saveTag(); // guardar new tag
         cy.wait(2000); // Esperar 2 segundos
     });

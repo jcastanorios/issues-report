@@ -16,7 +16,7 @@ describe("Escenario para validar y verificar la creación y la publicación de u
         LoginGhost.clickBotonSignIn(); 
     });
 
-    it("Noveno caso: Crear tag, con un titulo que contiene una fecha en Ghost...", () => {
+    it("Decimo caso: Crear tag, con un titulo que contiene una fecha en Ghost...", () => {
         let tituloTag = faker.internet.email();
         let slug = faker.random.alphaNumeric(190);
         let descript = faker.random.alphaNumeric(490);

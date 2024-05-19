@@ -2,14 +2,30 @@ import LoginGhost from "../../../support/login"; // Importar módulo de inicio d
 import TagTest from "../../../support/tagTest7"; // Importar el Tag Object creado
 import { faker } from '@faker-js/faker'; // Importar faker para generar datos falsos
 
-const dataPrueba = require("./data/caracteres_especiales.json");
-const dataPrueba1 = require("./data/text190.json");
-const dataPrueba2 = require("./data/text490.json");
+let datosEntrada = new Object();
 
 describe("Escenario para validar y verificar la creación y la publicación de un tag en la aplicación ghost", () => {
     //Credenciales de ghost
     const USER_GHOST = "wilderlopezm@gmail.com"; 
     const PASS_GHOST = "12345678901"; 
+
+    const apiUrl = `https://my.api.mockaroo.com/esc19.json?key=0c85de40`;
+    fetch(apiUrl)
+    .then(response => {
+        if (!response.ok) {
+        throw new Error('Hubo un problema al obtener los datos desde la API.');
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log(data);
+        const indiceAleatorio = Math.floor(Math.random() * data.length);
+        datosEntrada = data[indiceAleatorio];
+        console.log("Datos de entrada ----->", datosEntrada);
+    })
+    .catch(error => {
+        console.error('Error al obtener datos desde la API:', error);
+    });
 
     beforeEach(() => {
         //Inciar sesión en ghost antes de comenzar la prueba
@@ -19,29 +35,18 @@ describe("Escenario para validar y verificar la creación y la publicación de u
         LoginGhost.clickBotonSignIn(); 
     });
 
-    it("Septimo caso: Crear tag con nombre que contiene emoticon en Ghost...", () => {
-        let indice = new Number();
-        let indice1 = new Number();
-        let indice2 = new Number();
+    it("Noveno caso: Crear tag con datos aleatorios, limitados en Ghost...", () => {
+
         let tituloTag = new String();
         let slug = new String();
         let descript = new String();
 
-        //título
-        indice = getRandom(0, dataPrueba.length);
-        tituloTag = dataPrueba[indice];
-        tituloTag = JSON.stringify(dataPrueba[indice].title).replace(/"/g, '');
-        //slug
-        indice1 = getRandom(0, dataPrueba1.length);
-        slug = dataPrueba1[indice1];
-        slug = JSON.stringify(dataPrueba1[indice1].text_190).replace(/"/g, '');
-        //descripcion
-        indice2 = getRandom(0, dataPrueba2.length);
-        descript = dataPrueba2[indice2];
-        descript = JSON.stringify(dataPrueba2[indice2].text_490).replace(/"/g, '');
+        tituloTag = datosEntrada.titulo;
+        slug = datosEntrada.slug_190;
+        descript = datosEntrada.descript_490; 
         
         newTag(); // Llamar a la función para crear y publicar un tag
-        createTag(tituloTag, slug, descript); // datos new tag
+        createTag(tituloTag, slug, descript); // datos del new tag
         saveTag(); // guardar new tag
         cy.wait(2000); // Esperar 2 segundos
     });

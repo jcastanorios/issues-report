@@ -1,13 +1,34 @@
 import LoginGhost from "../../../support/login"; // Importar módulo de inicio de sesión
 import PageCreatePublish from "../../../support/pageCreatePublish"; // Importar el Page Object creado
 import ScreenshotPage from "../../../support/screenshot"; // Importar módulo para capturar pantallas
-import { faker } from '@faker-js/faker'; // Importar faker para generar datos falsos
 
+let datosEntrada = new Object();
 
 describe("Escenario para validar y verificar la creación y la publicación de un page en la aplicación ghost", () => {
     //Credenciales de ghost
     const USER_GHOST = "wilderlopezm@gmail.com"; 
     const PASS_GHOST = "12345678901"; 
+
+    const jsonFile = 'alfanumerico'; 
+    const apiKey = '7df48700';
+
+    const apiUrl = `https://my.api.mockaroo.com/${jsonFile}.json?key=${apiKey}`;
+    fetch(apiUrl)
+    .then(response => {
+        if (!response.ok) {
+        throw new Error('Hubo un problema al obtener los datos desde la API.');
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log(data);
+        const indiceAleatorio = Math.floor(Math.random() * data.length);
+        datosEntrada = data[indiceAleatorio];
+        console.log("Datos de entrada ----->", datosEntrada);
+    })
+    .catch(error => {
+        console.error('Error al obtener datos desde la API:', error);
+    });
 
     beforeEach(() => {
         //Inciar sesión en ghost antes de comenzar la prueba
@@ -19,16 +40,19 @@ describe("Escenario para validar y verificar la creación y la publicación de u
         //ScreenshotPage.takeScreenshot('Login', 'dashboard');
     });
 
-    it("Primer caso: Crear, publicar y verificar PAGE en Ghost con titulo largo ...", () => {
-        let tituloPage = faker.lorem.words(300)
-        let contenidoPage = faker.lorem.words(300);
+    it("Segundo caso: Crear página y programar su publicación Titulo con texto alfanumerico ...", () => {
+        let tituloPage = new String(); // Declarar variable para almacenar el título del post
+        let contenidoPage = new String(); // Declarar variable para almacenar el contenido del post 
         
-        let nombreEscenario = "ESC4_CreatePage";
+        tituloPage = datosEntrada.title;
+        contenidoPage = datosEntrada.description;  
+
+        let nombreEscenario = "ESC5_SchedulePage";
         createPublishPage(nombreEscenario); // Llamar a la función para crear y publicar un page
-        selectImageForPage(tituloPage, nombreEscenario); // Llamar a la función para seleccionar una imagen para el page
-        enterPageDetails(tituloPage, nombreEscenario,contenidoPage); // Llamar a la función para ingresar los detalles del page
-        publishPage(tituloPage, nombreEscenario); // Llamar a la función para publicar un page
-        checkPagePublished(tituloPage, nombreEscenario); // Llamar a la función para verificar que el page esté publicado
+        //selectImageForPage(tituloPage, nombreEscenario); // Llamar a la función para seleccionar una imagen para el page
+        enterPageDetails(tituloPage, nombreEscenario, contenidoPage); // Llamar a la función para ingresar los detalles del page
+        schedulePage(tituloPage, nombreEscenario); // Llamar a la función para programar la publicación de un page
+        checkPageScheduled(tituloPage, nombreEscenario); // Llamar a la función para verificar que el page esté publicado
         cy.wait(2000); // Esperar 2 segundos
     });
 
@@ -40,7 +64,6 @@ function schedulePage(tituloPage, nombreEscenario){
 }
 
 function createPublishPage(nombreEscenario){
-
     PageCreatePublish.visit(nombreEscenario); // Visitar la página de page
     PageCreatePublish.clickNewPage(nombreEscenario); // Hacer clic en el botón "New page"
 }
@@ -61,6 +84,10 @@ function publishPage(tituloPage, nombreEscenario){
 
 function checkPagePublished(tituloPage, nombreEscenario){
     PageCreatePublish.verifyPagePublished(tituloPage, nombreEscenario); // Verificar que la página esté publicada
+}
+
+function checkPageScheduled(tituloPage, nombreEscenario){
+    PageCreatePublish.verifyPageScheduled(tituloPage, nombreEscenario); // Verificar que la página esté publicada
 }
 
 function getRandom(min, max) {

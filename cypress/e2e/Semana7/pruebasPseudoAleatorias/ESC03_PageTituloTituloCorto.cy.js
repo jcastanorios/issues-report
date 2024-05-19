@@ -1,13 +1,35 @@
 import LoginGhost from "../../../support/login"; // Importar módulo de inicio de sesión
 import PageCreatePublish from "../../../support/pageCreatePublish"; // Importar el Page Object creado
 import ScreenshotPage from "../../../support/screenshot"; // Importar módulo para capturar pantallas
-import { faker } from '@faker-js/faker'; // Importar faker para generar datos falsos
+
+let datosEntrada = new Object();
 
 
 describe("Escenario para validar y verificar la creación y la publicación de un page en la aplicación ghost", () => {
     //Credenciales de ghost
     const USER_GHOST = "wilderlopezm@gmail.com"; 
     const PASS_GHOST = "12345678901"; 
+
+    const jsonFile = 'titulo_corto'; 
+    const apiKey = '7df48700';
+
+    const apiUrl = `https://my.api.mockaroo.com/${jsonFile}.json?key=${apiKey}`;
+    fetch(apiUrl)
+    .then(response => {
+        if (!response.ok) {
+        throw new Error('Hubo un problema al obtener los datos desde la API.');
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log(data);
+        const indiceAleatorio = Math.floor(Math.random() * data.length);
+        datosEntrada = data[indiceAleatorio];
+        console.log("Datos de entrada ----->", datosEntrada);
+    })
+    .catch(error => {
+        console.error('Error al obtener datos desde la API:', error);
+    });
 
     beforeEach(() => {
         //Inciar sesión en ghost antes de comenzar la prueba
@@ -19,9 +41,12 @@ describe("Escenario para validar y verificar la creación y la publicación de u
         //ScreenshotPage.takeScreenshot('Login', 'dashboard');
     });
 
-    it("Primer caso: Crear, publicar y verificar PAGE en Ghost con titulo largo ...", () => {
-        let tituloPage = faker.lorem.words(300)
-        let contenidoPage = faker.lorem.words(300);
+    it("Primer caso: Crear, publicar y verificar PAGE en Ghost con titulo corto ...", () => {
+        let tituloPage = new String(); // Declarar variable para almacenar el título del post
+        let contenidoPage = new String(); // Declarar variable para almacenar el contenido del post 
+        
+        tituloPage = datosEntrada.title;
+        contenidoPage = datosEntrada.description;
         
         let nombreEscenario = "ESC4_CreatePage";
         createPublishPage(nombreEscenario); // Llamar a la función para crear y publicar un page
@@ -34,10 +59,6 @@ describe("Escenario para validar y verificar la creación y la publicación de u
 
 });
 
-function schedulePage(tituloPage, nombreEscenario){
-    PageCreatePublish.schedulePage(tituloPage, nombreEscenario); // Publicar page
-    cy.wait(2000); // Esperar 2 segundos
-}
 
 function createPublishPage(nombreEscenario){
 

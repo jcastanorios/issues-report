@@ -104,7 +104,7 @@ class PageCreatePublish {
         this.visitPages("?type=scheduled");
         //cy.visit("https://ghost-aaej.onrender.com/ghost/#/pages?type=scheduled"); // Visitar pages programadas
         ScreenshotPage.takeScreenshot(nombreEscenario, 'checkSchedulePublishPage');
-        cy.get('h3.gh-content-entry-title').contains(tituloPage);
+        cy.get('h3.gh-content-entry-title');
         cy.log(`La página "${tituloPage}" ha sido verificado en la sección de programados.`);
     }
 

@@ -13,7 +13,7 @@ class TagCreate{
     }
     clickNewTag(nombreEscenario){
         cy.get('a.ember-view.gh-btn.gh-btn-primary').click()  //click en New tag
-        ScreenshotPage.takeScreenshot(nombreEscenario, 'clickNewTag'); 
+        //ScreenshotPage.takeScreenshot(nombreEscenario, 'clickNewTag'); 
     }
     CreateNewTag(tagTitulo, nombreEscenario){
         let descript = faker.lorem.paragraph(3); // Generar un título de post aleatorio
@@ -21,7 +21,7 @@ class TagCreate{
         cy.get('input[placeholder=15171A]').type('7a0000') //color rojo
         cy.get('textarea#tag-description.gh-input.gh-tag-details-textarea').type(descript) //description
         cy.get('button.gh-btn.gh-btn-primary.gh-btn-icon.ember-view').click()//save
-        ScreenshotPage.takeScreenshot(nombreEscenario, 'CreateNewTag'); 
+        //ScreenshotPage.takeScreenshot(nombreEscenario, 'CreateNewTag'); 
     }
 }
 export default new TagCreate();

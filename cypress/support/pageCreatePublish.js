@@ -145,12 +145,11 @@ class PageCreatePublish {
         ScreenshotPage.takeScreenshot(nombreEscenario, 'closeNewPage');
     }
     verifyPageDrawft(tituloPost, nombreEscenario) {
-        this.visitPages("");
-        ScreenshotPage.takeScreenshot(nombreEscenario, 'verfyPageDrawf 1');
-        //cy.visit("https://ghost-aaej.onrender.com/ghost/#/pages"); // Visitar los posts publicados
+        this.visitPages("?type=draft");
+        //ScreenshotPage.takeScreenshot(nombreEscenario, 'verfyPageDrawf 1');
         cy.get('section.view-actions > div > div:nth-child(1) > div:nth-child(1)').click({force:true})  //selección de All pages        
         cy.contains('h3.gh-content-entry-title',tituloPost).should('exist');    
-        ScreenshotPage.takeScreenshot(nombreEscenario, 'verfyPageDrawf 2');
+        //ScreenshotPage.takeScreenshot(nombreEscenario, 'verfyPageDrawf 2');
     }
     asignarTagPage(tagTitulo, nombreEscenario){                
         cy.get('button.settings-menu-toggle.gh-btn.gh-btn-editor.gh-btn-icon.icon-only.gh-btn-action-icon').click() //click en panel lateral de settings

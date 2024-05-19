@@ -71,3 +71,23 @@ En este directorio se encuentran tres directorios que son:
 Es importante mencionar que la cantidad de imágenes en ambos directorios tanto para la versión 4 como para la versión 5 deben ser iguales en nombre y cantidad. 
 
 Una vez almacenadas las imágenes en las carpetas de cada versión, si se requiere ejecutar la comparación de imágenes y generación del informe, se debe digitar el comando > node g9.regresion.visual  
+
+----------------------------------------------------------------------------------------------------------------------------------------
+### Entrega Semana 7
+
+## Instrucciones para ejecución de pruebas:
+
+1. Clonar el repositorio.
+2. Dirígete a la raíz del repositorio "pruebas-automatizadas-sw".
+3. Abre una consola en esa ubicación.
+4. En el archivo "package.json" ya están habilitadas todas las dependencias, simplemente ejecuta `npm install`.
+5. Ingresa a la carpeta "cypress".
+6. Una vez dentro de la carpeta "cypress", ejecuta el comando "cypress open" en la consola.
+7. Cuando se abra la aplicación de Cypress, haz clic en "+Add Project".
+8. Selecciona la carpeta "pruebas-automatizadas-sw" para cargar la configuración E2E.
+9. Dentro de la carpeta "E2E" encontrarás dos subcarpetas: "Semanas Anteriores" y "Semana 7".
+10. En "Semanas Anteriores" están las pruebas implementadas en semanas pasadas, incluyendo versiones anteriores de Ghost. En "Semana 7" encontrarás la entrega de esta semana.
+11. Dentro de "Semana 7" están las pruebas para cada estrategia de generación de datos: Apriori, aleatoria y pseudo-aleatoria.
+12. Para ejecutar las pruebas, simplemente ingresa a cada una de esas carpetas desde la herramienta de Cypress y ejecuta cada prueba individualmente.
+
+Nota no se versionan: la carpeta node_modules, las dependencias existen en el package.json y solo basta con ejecutar el comando npm install.

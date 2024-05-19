@@ -16,7 +16,7 @@ describe('Escenario #16 - Crear un post, Modificar staff y validar los cambios e
          LoginGhost.clickBotonSignIn(); 
     })
 
-    it('ESC100-Crear un nuevo post, Modificar el nombre del usuario con nombre corto y verificar el cambio -PSeduoAletorio', () => {
+    it('ESC100-Crear un nuevo post, Modificar el nombre del usuario con nombre corto y verificar el cambio -PSeudoAleatorio', () => {
         let titulo = faker.commerce.productName(); // Generar un título de post aleatorio
         let url = "https://my.api.mockaroo.com/test_schema.json?key=888364c0";        
         cy.request(url)

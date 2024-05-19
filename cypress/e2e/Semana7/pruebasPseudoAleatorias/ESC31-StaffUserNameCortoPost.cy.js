@@ -14,7 +14,7 @@ describe('Escenario #16 - Crear un post, Modificar staff y validar los cambios e
          LoginGhost.clickBotonSignIn(); 
     })
 
-    it('ESC093-Crear un nuevo post, Modificar el nombre del usuario con nombre largo y verificar el cambio -PSeduoAletorio', () => {
+    it('ESC093-Crear un nuevo post, Modificar el nombre del usuario con nombre largo y verificar el cambio -PSeudoAleatorio', () => {
         let userName;
         let lista = []
         let elem = new Object()    

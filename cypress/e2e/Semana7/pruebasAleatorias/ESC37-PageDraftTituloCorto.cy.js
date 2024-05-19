@@ -11,7 +11,7 @@ describe('Escenario #18 - Crear un post, y verificar que este publicado en borra
          LoginGhost.diligenciarPassword(Constantes.PASS_GHOST); 
          LoginGhost.clickBotonSignIn(); 
      })
-     it('ESC109-Crear un nuevo page con nombre corto, Verificar que este en la lista de borrador- Aletorio', () => {
+     it('ESC109-Crear un nuevo page con nombre corto, Verificar que este en la lista de borrador- Aleatorio', () => {
         let titulo = faker.lorem.word(); // Generar un título aletorio
         createPublishPage(); //Abre la ventana para crear la publicación
         enterPageDetails(titulo); //Ingresar el texto de la página

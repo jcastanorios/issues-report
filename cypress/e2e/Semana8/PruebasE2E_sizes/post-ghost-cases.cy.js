@@ -10,7 +10,8 @@ describe("Escenario para validar y verificar la creación y la publicación de u
     const PASS_GHOST = "12345678901"; 
 
     beforeEach(() => {
-        cy.viewport(Constantes.device); // Cambiar la resolución de la pantalla a iPad 2
+        //realizar set del valor para el view port de la prueba
+        LoginGhost.setViewPort();
         //Inciar sesión en ghost antes de comenzar la prueba
         LoginGhost.visit(); 
         LoginGhost.diligenciarEmail(USER_GHOST); 

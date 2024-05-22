@@ -12,8 +12,8 @@ export class Constantes {
   static FOLDER_ESC_UPDATE_PAGE="ESC15_Editar_pagina_para_un_blog";
   
   //4 ó 5
-  static VERSION_GHOST =5;
-  static device = 'ipad-2'; //ipad-2
+  static VERSION_GHOST=5;
+  static PRESET_DEVICE;
 }
 
 /* 

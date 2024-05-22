@@ -1,12 +1,10 @@
-import { Constantes } from "../support/constantes";
+
 const LoginGhost = {
     visit() {
-      let url;
-      if (Constantes.VERSION_GHOST==4){
+      let url = "https://ghost-aaej.onrender.com/ghost/#/signin";
+      if (!!Cypress.env('VERSION_GHOST')){
         url ="https://ghost-t6x4.onrender.com/ghost/#/signin"
-      }else if(Constantes.VERSION_GHOST==5){
-        url ="https://ghost-aaej.onrender.com/ghost/#/signin";
-      }
+      } 
       cy.visit(url);
       cy.wait(5000);
     },
@@ -30,6 +28,12 @@ const LoginGhost = {
     errorLogin() {
       return cy.get("#ember10 > span").invoke("text").then((text) => text.trim());
     },
+
+    setViewPort(){
+      if(!!Cypress.env('PRESET_DEVICE')){
+        cy.viewport(Cypress.env('PRESET_DEVICE'));
+      }
+    }
   };
   
   export default LoginGhost;

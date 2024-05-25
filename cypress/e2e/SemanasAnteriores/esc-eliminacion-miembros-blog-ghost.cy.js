@@ -7,6 +7,7 @@ import ScreenshotPage from "../../support/screenshot";
 describe("Escenario de pruebas para eliminación de un miembro de un blog", () => {
   let totalMembers = 0;
   beforeEach(() => {
+    LoginGhost.setViewPortAndLandScape();
     LoginGhost.visit();
     ScreenshotPage.takeScreenshot(Constantes.FOLDER_LOGIN, "login-visit-url");
     LoginGhost.diligenciarEmail(Constantes.USER_GHOST);

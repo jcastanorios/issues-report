@@ -7,6 +7,7 @@ import PageObjectModel from "../../support/pageObjectModel";
 
 describe("Escenario creación de una página para un blog y verificar su actualización en draft", () => {
   beforeEach(() => {
+    LoginGhost.setViewPortAndLandScape();
     LoginGhost.visit();
     ScreenshotPage.takeScreenshot(Constantes.FOLDER_LOGIN, "login-visit-url");
     LoginGhost.diligenciarEmail(Constantes.USER_GHOST);

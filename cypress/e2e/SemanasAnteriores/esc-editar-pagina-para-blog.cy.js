@@ -7,6 +7,7 @@ import ScreenshotPage from "../../support/screenshot";
 
 describe("Escenario para verificar la edición de una pagina en la aplicación ghost", () => {
   beforeEach(() => {
+    LoginGhost.setViewPortAndLandScape();
     LoginGhost.visit();
     ScreenshotPage.takeScreenshot(Constantes.FOLDER_LOGIN, "login-visit-url");
     LoginGhost.diligenciarEmail(Constantes.USER_GHOST);

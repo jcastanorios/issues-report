@@ -33,6 +33,12 @@ const LoginGhost = {
       if(!!Cypress.env('PRESET_DEVICE')){
         cy.viewport(Cypress.env('PRESET_DEVICE'));
       }
+    },
+
+    setViewPortAndLandScape(){
+      if(!!Cypress.env('PRESET_DEVICE')){
+        cy.viewport(Cypress.env('PRESET_DEVICE'), 'landscape');
+      }
     }
   };
   

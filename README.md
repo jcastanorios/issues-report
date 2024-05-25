@@ -1,4 +1,4 @@
-#Integrantes del equipo
+## Integrantes del equipo
 
 Danna Coral                       - d.corall@uniandes.edu.co
 Fabian Mauricio Quintero Castillo - f.quinteroc@uniandes.edu.co
@@ -91,3 +91,21 @@ Una vez almacenadas las imágenes en las carpetas de cada versión, si se requie
 12. Para ejecutar las pruebas, simplemente ingresa a cada una de esas carpetas desde la herramienta de Cypress y ejecuta cada prueba individualmente.
 
 Nota no se versionan: la carpeta node_modules, las dependencias existen en el package.json y solo basta con ejecutar el comando npm install.
+
+
+----------------------------------------------------------------------------------------------------------------------------------------
+### Entrega Semana 8
+
+## Instrucciones para ejecución de pruebas:
+
+1. Clonar el repositorio.
+2. Dirígete a la raíz del repositorio "pruebas-automatizadas-sw".
+3. Abre una consola en esa ubicación.
+4. En el archivo "package.json" ya están habilitadas todas las dependencias, simplemente ejecuta `npm install`.
+5. Ingresa a la carpeta "cypress".
+6. Una vez dentro de la carpeta "cypress", ejecuta el comando `cypress open --env PRESET_DEVICE='iphone-x'` o `cypress open --env PRESET_DEVICE='ipad-2'` en la consola.
+7. Cuando se abra la aplicación de Cypress, haz clic en "+Add Project".
+8. Selecciona la carpeta "pruebas-automatizadas-sw" para cargar la configuración E2E.
+9. Dentro de la carpeta "E2E" encontrarás tres subcarpetas: "Semanas Anteriores", "Semana 7" y "Semana 8".
+10. Dentro de "Semana 8" están las pruebas de post, page y tags ajustadas para correr en dispositivos móviles.
+12. Para ejecutar las pruebas, simplemente ejecute cada una de las pruebas contenidas dentro de la carpeta Semana 8 desde la herramienta de Cypress.

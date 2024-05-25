@@ -2,7 +2,12 @@ import { Constantes } from "./constantes";
 import ScreenshotPage from "../support/screenshot"; // Importar módulo para capturar pantallas
 
 class UserObjectModel{
-    settingUser(nombreEscenario){
+    settingUser(nombreEscenario, dispositivo){
+        console.log("dispositivo movil"+dispositivo)
+        if (dispositivo=="Movil"){
+            console.log("dispositivo movil")
+            cy.get('div.gh-mobile-nav-bar-more').click({force: true})
+        }
         cy.get('a[href="#/settings/"]').click(); //Clic en la herramienta
         ScreenshotPage.takeScreenshot(nombreEscenario, 'SettingUser 1'); 
         cy.get('a[href="#/settings/staff/"]').click(); //Clic en Staff
